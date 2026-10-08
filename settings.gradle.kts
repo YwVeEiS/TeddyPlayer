@@ -19,5 +19,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "TeddyApp"
+rootProject.name = "TeddyPlayer"
 include(":app")

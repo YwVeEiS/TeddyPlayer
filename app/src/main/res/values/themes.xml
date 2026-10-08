@@ -1,11 +1,11 @@
 <resources>
-    <style name="Theme.TeddyApp" parent="android:Theme.Material.Light.NoActionBar">
+    <style name="Theme.TeddyPlayer" parent="android:Theme.Material.Light.NoActionBar">
         <item name="android:windowBackground">@color/background</item>
     </style>
 
-    <style name="Theme.TeddyApp.Splash" parent="Theme.SplashScreen">
+    <style name="Theme.TeddyPlayer.Splash" parent="Theme.SplashScreen">
         <item name="windowSplashScreenBackground">@color/background</item>
         <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
-        <item name="postSplashScreenTheme">@style/Theme.TeddyApp</item>
+        <item name="postSplashScreenTheme">@style/Theme.TeddyPlayer</item>
     </style>
 </resources>

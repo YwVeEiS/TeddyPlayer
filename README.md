@@ -1,4 +1,4 @@
-# TeddyApp
+# TeddyPlayer
 
 Kinderfreundliche Android-App für einen [TeddyCloud](https://github.com/toniebox-reverse-engineering/teddycloud)-Server:
 alle Tonies als große Cover-Kacheln, Antippen spielt ab, und dabei wird der Tonie wie bei der Toniebox
@@ -29,3 +29,7 @@ fehlende Berechtigung „Lokales Netzwerk"). Entweder dem Emulator in den System
 unter *Datenschutz & Sicherheit → Lokales Netzwerk* den Zugriff erlauben, oder einen Port-Forward
 nutzen (`adb reverse tcp:8089 tcp:8089` + lokaler Proxy) und im Elternbereich `127.0.0.1:8089` eintragen.
 Auf einem echten Handy im WLAN ist das nicht nötig.
+
+## Testdaten
+`app/src/test/resources/tag_index.json` ist eine echte `getTagIndex`-Antwort eines TeddyCloud-Servers
+mit anonymisierten Tag-IDs/UIDs (Titel, Kapitel und Cover-URLs sind öffentliche Tonie-Metadaten).

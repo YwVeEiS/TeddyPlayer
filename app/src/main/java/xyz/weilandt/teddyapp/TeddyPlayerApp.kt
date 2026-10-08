@@ -13,12 +13,12 @@ import org.koin.core.context.startKoin
 import xyz.weilandt.teddyapp.di.appModules
 import xyz.weilandt.teddyapp.domain.repository.DownloadRepository
 
-class TeddyApp : Application(), SingletonImageLoader.Factory {
+class TeddyPlayerApp : Application(), SingletonImageLoader.Factory {
 
     override fun onCreate() {
         super.onCreate()
         startKoin {
-            androidContext(this@TeddyApp)
+            androidContext(this@TeddyPlayerApp)
             modules(appModules)
         }
         // DownloadManager muss auf dem Main-Thread entstehen und früh den Stand laden.
