@@ -1,6 +1,13 @@
 package xyz.weilandt.teddyapp.ui.player
 
 import androidx.compose.foundation.background
+import xyz.weilandt.teddyapp.ui.preview.TABLET_PORTRAIT
+import xyz.weilandt.teddyapp.domain.model.Tonie
+import androidx.compose.ui.tooling.preview.Devices
+import androidx.compose.ui.unit.Dp
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -67,122 +74,162 @@ fun PlayerScreen(
     state: PlayerState,
     onIntent: (PlayerIntent) -> Unit,
 ) {
-    Column(
+    BoxWithConstraints(
         modifier = Modifier
             .fillMaxSize()
             .background(TeddyColors.Background)
             .systemBarsPadding()
             .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Row(Modifier.fillMaxWidth()) {
-            BigIconButton(
-                icon = Icons.Rounded.Home,
-                contentDescription = "Zurück zur Übersicht",
-                onClick = { onIntent(PlayerIntent.Close) },
-                size = 64.dp,
-                containerColor = TeddyColors.Secondary,
-            )
-        }
-
+        val isLandscape = maxWidth > maxHeight
+        // Tablets bekommen größere Knöpfe
+        val sizes = if (minOf(maxWidth, maxHeight) >= 600.dp) ControlSizes.Large else ControlSizes.Regular
         val tonie = state.tonie
-        if (tonie == null) {
-            Box(Modifier.weight(1f), contentAlignment = Alignment.Center) {
+
+        when {
+            tonie == null -> Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                 Icon(Icons.Rounded.MusicOff, contentDescription = null, tint = TeddyColors.Muted, modifier = Modifier.size(140.dp))
             }
-            return@Column
-        }
-
-        Box(
-            modifier = Modifier
-                .weight(1f)
-                .fillMaxWidth()
-                .padding(vertical = 16.dp),
-            contentAlignment = Alignment.Center,
-        ) {
-            TonieCover(
-                tonieId = tonie.id,
-                coverUrl = tonie.coverUrl,
-                contentDescription = tonie.displayName,
+            isLandscape -> Row(
                 modifier = Modifier.fillMaxSize(),
-                grayscale = state.hasError,
-            )
-            if (state.hasError) {
-                Icon(Icons.Rounded.CloudOff, contentDescription = "Fehler", tint = TeddyColors.Warning, modifier = Modifier.size(120.dp))
-            }
-        }
-
-        if (state.showTitles) {
-            Text(
-                text = tonie.shortTitle,
-                style = MaterialTheme.typography.headlineSmall,
-                fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center,
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis,
-            )
-            if (tonie.series.isNotBlank() && tonie.series != tonie.shortTitle) {
-                Text(
-                    text = tonie.series,
-                    style = MaterialTheme.typography.titleMedium,
-                    color = TeddyColors.Muted,
-                    textAlign = TextAlign.Center,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
-            }
-            Spacer(Modifier.height(16.dp))
-        }
-
-        ChapterDots(
-            chapterCount = state.chapterCount,
-            currentChapter = state.currentChapter,
-            progressInChapter = state.chapterProgress,
-            onChapterClick = { onIntent(PlayerIntent.ChapterSelected(it)) },
-        )
-
-        Spacer(Modifier.height(32.dp))
-
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            BigIconButton(
-                icon = Icons.Rounded.SkipPrevious,
-                contentDescription = "Kapitel zurück",
-                onClick = { onIntent(PlayerIntent.PreviousChapter) },
-                containerColor = TeddyColors.Tertiary,
-                enabled = !state.hasError,
-            )
-            Box(contentAlignment = Alignment.Center) {
-                BigIconButton(
-                    icon = when {
-                        state.hasError -> Icons.Rounded.Replay
-                        state.isPlaying -> Icons.Rounded.Pause
-                        else -> Icons.Rounded.PlayArrow
-                    },
-                    contentDescription = if (state.isPlaying) "Pause" else "Abspielen",
-                    onClick = { onIntent(PlayerIntent.TogglePlayPause) },
-                    size = 128.dp,
-                )
-                if (state.isBuffering) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(140.dp),
-                        color = TeddyColors.Secondary,
-                        strokeWidth = 6.dp,
-                    )
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                PlayerCover(state, tonie, Modifier.weight(1f).fillMaxHeight().padding(start = 72.dp, end = 16.dp))
+                Column(
+                    modifier = Modifier.weight(1f),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
+                    PlayerInfo(state, tonie, sizes, onIntent)
+                    Spacer(Modifier.height(32.dp))
+                    PlayerControls(state, sizes, onIntent)
                 }
             }
-            BigIconButton(
-                icon = Icons.Rounded.SkipNext,
-                contentDescription = "Kapitel vor",
-                onClick = { onIntent(PlayerIntent.NextChapter) },
-                containerColor = TeddyColors.Tertiary,
-                enabled = state.canGoNext && !state.hasError,
+            else -> Column(
+                modifier = Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                Spacer(Modifier.height(sizes.home))
+                PlayerCover(state, tonie, Modifier.weight(1f).fillMaxWidth().padding(vertical = 16.dp))
+                Column(
+                    modifier = Modifier.widthIn(max = 640.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
+                    PlayerInfo(state, tonie, sizes, onIntent)
+                    Spacer(Modifier.height(32.dp))
+                    PlayerControls(state, sizes, onIntent)
+                }
+                Spacer(Modifier.height(24.dp))
+            }
+        }
+
+        BigIconButton(
+            icon = Icons.Rounded.Home,
+            contentDescription = "Zurück zur Übersicht",
+            onClick = { onIntent(PlayerIntent.Close) },
+            size = sizes.home,
+            containerColor = TeddyColors.Secondary,
+            modifier = Modifier.align(Alignment.TopStart),
+        )
+    }
+}
+
+private enum class ControlSizes(val home: Dp, val side: Dp, val play: Dp, val dot: Dp) {
+    Regular(home = 64.dp, side = 88.dp, play = 128.dp, dot = 20.dp),
+    Large(home = 80.dp, side = 112.dp, play = 168.dp, dot = 30.dp),
+}
+
+@Composable
+private fun PlayerCover(state: PlayerState, tonie: Tonie, modifier: Modifier) {
+    Box(modifier, contentAlignment = Alignment.Center) {
+        TonieCover(
+            tonieId = tonie.id,
+            coverUrl = tonie.coverUrl,
+            contentDescription = tonie.displayName,
+            modifier = Modifier.fillMaxSize(),
+            grayscale = state.hasError,
+        )
+        if (state.hasError) {
+            Icon(Icons.Rounded.CloudOff, contentDescription = "Fehler", tint = TeddyColors.Warning, modifier = Modifier.size(120.dp))
+        }
+    }
+}
+
+/** Titel (optional) und Kapitel-Punkte. */
+@Composable
+private fun PlayerInfo(state: PlayerState, tonie: Tonie, sizes: ControlSizes, onIntent: (PlayerIntent) -> Unit) {
+    if (state.showTitles) {
+        Text(
+            text = tonie.shortTitle,
+            style = MaterialTheme.typography.headlineSmall,
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Center,
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis,
+        )
+        if (tonie.series.isNotBlank() && tonie.series != tonie.shortTitle) {
+            Text(
+                text = tonie.series,
+                style = MaterialTheme.typography.titleMedium,
+                color = TeddyColors.Muted,
+                textAlign = TextAlign.Center,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
             )
         }
-        Spacer(Modifier.height(24.dp))
+        Spacer(Modifier.height(16.dp))
+    }
+
+    ChapterDots(
+        chapterCount = state.chapterCount,
+        currentChapter = state.currentChapter,
+        progressInChapter = state.chapterProgress,
+        onChapterClick = { onIntent(PlayerIntent.ChapterSelected(it)) },
+        dotSize = sizes.dot,
+    )
+}
+
+@Composable
+private fun PlayerControls(state: PlayerState, sizes: ControlSizes, onIntent: (PlayerIntent) -> Unit) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceEvenly,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        BigIconButton(
+            icon = Icons.Rounded.SkipPrevious,
+            contentDescription = "Kapitel zurück",
+            onClick = { onIntent(PlayerIntent.PreviousChapter) },
+            size = sizes.side,
+            containerColor = TeddyColors.Tertiary,
+            enabled = !state.hasError,
+        )
+        Box(contentAlignment = Alignment.Center) {
+            BigIconButton(
+                icon = when {
+                    state.hasError -> Icons.Rounded.Replay
+                    state.isPlaying -> Icons.Rounded.Pause
+                    else -> Icons.Rounded.PlayArrow
+                },
+                contentDescription = if (state.isPlaying) "Pause" else "Abspielen",
+                onClick = { onIntent(PlayerIntent.TogglePlayPause) },
+                size = sizes.play,
+            )
+            if (state.isBuffering) {
+                CircularProgressIndicator(
+                    modifier = Modifier.size(sizes.play + 12.dp),
+                    color = TeddyColors.Secondary,
+                    strokeWidth = 6.dp,
+                )
+            }
+        }
+        BigIconButton(
+            icon = Icons.Rounded.SkipNext,
+            contentDescription = "Kapitel vor",
+            onClick = { onIntent(PlayerIntent.NextChapter) },
+            size = sizes.side,
+            containerColor = TeddyColors.Tertiary,
+            enabled = state.canGoNext && !state.hasError,
+        )
     }
 }
 
@@ -207,7 +254,9 @@ internal class PlayerStateProvider : PreviewParameterProvider<PlayerState> {
     )
 }
 
-@Preview(showBackground = true, widthDp = 400, heightDp = 860)
+@Preview(name = "Handy", showBackground = true, widthDp = 400, heightDp = 860)
+@Preview(name = "Tablet hoch", showBackground = true, device = TABLET_PORTRAIT)
+@Preview(name = "Tablet quer", showBackground = true, device = Devices.PIXEL_TABLET)
 @Composable
 private fun PlayerScreenPreview(@PreviewParameter(PlayerStateProvider::class) state: PlayerState) = TeddyTheme {
     PlayerScreen(state = state, onIntent = {})

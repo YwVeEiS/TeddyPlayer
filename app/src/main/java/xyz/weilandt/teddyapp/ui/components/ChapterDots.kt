@@ -21,6 +21,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import xyz.weilandt.teddyapp.ui.theme.TeddyColors
 import xyz.weilandt.teddyapp.ui.theme.TeddyTheme
@@ -37,6 +38,7 @@ fun ChapterDots(
     progressInChapter: Float,
     onChapterClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
+    dotSize: Dp = 20.dp,
 ) {
     FlowRow(
         modifier = modifier.fillMaxWidth(),
@@ -46,7 +48,7 @@ fun ChapterDots(
     ) {
         repeat(chapterCount) { index ->
             val isCurrent = index == currentChapter
-            val size by animateDpAsState(if (isCurrent) 30.dp else 20.dp, label = "dotSize")
+            val size by animateDpAsState(if (isCurrent) dotSize * 1.5f else dotSize, label = "dotSize")
             Box(
                 modifier = Modifier
                     .size(size)
@@ -93,4 +95,10 @@ private fun ChapterDotsManyPreview() = TeddyTheme {
 @Composable
 private fun ChapterDotsSinglePreview() = TeddyTheme {
     ChapterDots(chapterCount = 1, currentChapter = 0, progressInChapter = 0.3f, onChapterClick = {}, modifier = Modifier.padding(16.dp))
+}
+
+@Preview(showBackground = true, widthDp = 600)
+@Composable
+private fun ChapterDotsLargePreview() = TeddyTheme {
+    ChapterDots(chapterCount = 8, currentChapter = 2, progressInChapter = 0.6f, onChapterClick = {}, modifier = Modifier.padding(16.dp), dotSize = 30.dp)
 }

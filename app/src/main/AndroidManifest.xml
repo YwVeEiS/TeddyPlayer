@@ -21,7 +21,6 @@
             android:name=".MainActivity"
             android:exported="true"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"
             android:theme="@style/Theme.TeddyApp.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

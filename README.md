@@ -16,7 +16,7 @@ heruntergeladen. Danach geht er auch offline.
 ## Technik
 Kotlin, Jetpack Compose, MVI (`core/mvi/MviViewModel` + reine Reducer), Koin, Ktor, Room, DataStore,
 Media3 (ExoPlayer, MediaSessionService, DownloadManager mit gemeinsamem `SimpleCache`), Coil 3.
-minSdk 29.
+minSdk 29. Läuft auf Handys (Hochformat) und Tablets (Hoch- und Querformat, adaptives Grid und Player).
 
 ```
 ./gradlew :app:testDebugUnitTest   # Unit-Tests

@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.selection.toggleable
@@ -45,6 +47,7 @@ import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
@@ -101,7 +104,11 @@ fun ParentSettingsScreen(
                 bottom = padding.calculateBottomPadding() + 24.dp,
             ),
             verticalArrangement = Arrangement.spacedBy(12.dp),
-            modifier = Modifier.fillMaxSize(),
+            // Auf Tablets eine lesbare Spalte in der Mitte statt Zeilen über die ganze Breite
+            modifier = Modifier
+                .fillMaxSize()
+                .wrapContentWidth(Alignment.CenterHorizontally)
+                .widthIn(max = 720.dp),
         ) {
             item { ServerSection(state, onIntent) }
             item { HorizontalDivider() }
@@ -279,7 +286,8 @@ internal class ParentSettingsStateProvider : PreviewParameterProvider<ParentSett
     )
 }
 
-@Preview(showBackground = true, widthDp = 400, heightDp = 860)
+@Preview(name = "Handy", showBackground = true, widthDp = 400, heightDp = 860)
+@Preview(name = "Tablet quer", showBackground = true, device = Devices.PIXEL_TABLET)
 @Composable
 private fun ParentSettingsScreenPreview(
     @PreviewParameter(ParentSettingsStateProvider::class) state: ParentSettingsState,

@@ -14,6 +14,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -61,7 +63,12 @@ fun MiniPlayer(
         color = TeddyColors.Surface,
     ) {
         Row(
-            modifier = Modifier.padding(horizontal = 20.dp, vertical = 12.dp),
+            // Auf Tablets nicht über die ganze Breite ziehen, sondern zentrieren
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentWidth(Alignment.CenterHorizontally)
+                .widthIn(max = 840.dp)
+                .padding(horizontal = 20.dp, vertical = 12.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Row(
@@ -153,5 +160,11 @@ private fun MiniPlayerBufferingPreview() = TeddyTheme {
 @Preview(showBackground = true)
 @Composable
 private fun MiniPlayerWithTitlePreview() = TeddyTheme {
+    MiniPlayer(SampleData.bobo, isPlaying = true, isBuffering = false, progress = 0.55f, onOpen = {}, onTogglePlayPause = {}, showTitle = true)
+}
+
+@Preview(showBackground = true, widthDp = 1280)
+@Composable
+private fun MiniPlayerTabletPreview() = TeddyTheme {
     MiniPlayer(SampleData.bobo, isPlaying = true, isBuffering = false, progress = 0.55f, onOpen = {}, onTogglePlayPause = {}, showTitle = true)
 }

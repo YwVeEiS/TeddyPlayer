@@ -3,6 +3,7 @@ package xyz.weilandt.teddyapp.ui.library
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -32,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
@@ -45,6 +47,7 @@ import xyz.weilandt.teddyapp.ui.components.HoldToOpenButton
 import xyz.weilandt.teddyapp.ui.components.MiniPlayer
 import xyz.weilandt.teddyapp.ui.components.TonieTile
 import xyz.weilandt.teddyapp.ui.preview.SampleData
+import xyz.weilandt.teddyapp.ui.preview.TABLET_PORTRAIT
 import xyz.weilandt.teddyapp.ui.setup.ServerSetupRoute
 import xyz.weilandt.teddyapp.ui.theme.TeddyColors
 import xyz.weilandt.teddyapp.ui.theme.TeddyTheme
@@ -144,24 +147,29 @@ private fun TonieGrid(
     onIntent: (LibraryIntent) -> Unit,
 ) {
     val playingId = state.playback.tonieId
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(2),
-        contentPadding = PaddingValues(16.dp),
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-        modifier = Modifier.fillMaxSize(),
-    ) {
-        items(state.items, key = { it.tonie.id }) { item ->
-            TonieTile(
-                tonie = item.tonie,
-                downloadStatus = item.download,
-                isAvailable = state.isAvailable(item),
-                isNowPlaying = item.tonie.id == playingId,
-                shakeTrigger = shakeTriggers[item.tonie.id] ?: 0,
-                showTitle = state.showTitles,
-                onClick = { onIntent(LibraryIntent.TonieClicked(item.tonie.id)) },
-                modifier = Modifier.animateItem(),
-            )
+    BoxWithConstraints(Modifier.fillMaxSize()) {
+        // Handy: immer 2 große Kacheln; Tablet: so viele Spalten wie passen (hoch ~4, quer ~6)
+        val isCompact = maxWidth < 600.dp
+        val spacing = if (isCompact) 16.dp else 24.dp
+        LazyVerticalGrid(
+            columns = if (isCompact) GridCells.Fixed(2) else GridCells.Adaptive(minSize = 180.dp),
+            contentPadding = PaddingValues(spacing),
+            horizontalArrangement = Arrangement.spacedBy(spacing),
+            verticalArrangement = Arrangement.spacedBy(spacing),
+            modifier = Modifier.fillMaxSize(),
+        ) {
+            items(state.items, key = { it.tonie.id }) { item ->
+                TonieTile(
+                    tonie = item.tonie,
+                    downloadStatus = item.download,
+                    isAvailable = state.isAvailable(item),
+                    isNowPlaying = item.tonie.id == playingId,
+                    shakeTrigger = shakeTriggers[item.tonie.id] ?: 0,
+                    showTitle = state.showTitles,
+                    onClick = { onIntent(LibraryIntent.TonieClicked(item.tonie.id)) },
+                    modifier = Modifier.animateItem(),
+                )
+            }
         }
     }
 }
@@ -229,7 +237,9 @@ internal class LibraryStateProvider : PreviewParameterProvider<LibraryState> {
     )
 }
 
-@Preview(showBackground = true, widthDp = 400, heightDp = 860)
+@Preview(name = "Handy", showBackground = true, widthDp = 400, heightDp = 860)
+@Preview(name = "Tablet hoch", showBackground = true, device = TABLET_PORTRAIT)
+@Preview(name = "Tablet quer", showBackground = true, device = Devices.PIXEL_TABLET)
 @Composable
 private fun LibraryScreenPreview(@PreviewParameter(LibraryStateProvider::class) state: LibraryState) = TeddyTheme {
     LibraryScreen(state = state, onIntent = {})

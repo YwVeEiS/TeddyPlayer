@@ -20,3 +20,6 @@ object SampleData {
 
     val tonies = listOf(bobo, conni, pikachu, frozen, sandman, custom)
 }
+
+/** Preview-Gerät: Tablet im Hochformat (Devices.PIXEL_TABLET ist quer). */
+const val TABLET_PORTRAIT = "spec:width=800dp,height=1280dp,dpi=320"

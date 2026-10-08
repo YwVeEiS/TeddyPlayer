@@ -27,6 +27,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
@@ -135,7 +136,8 @@ internal class ParentGateStateProvider : PreviewParameterProvider<ParentGateStat
     )
 }
 
-@Preview(showBackground = true, widthDp = 400, heightDp = 860)
+@Preview(name = "Handy", showBackground = true, widthDp = 400, heightDp = 860)
+@Preview(name = "Tablet quer", showBackground = true, device = Devices.PIXEL_TABLET)
 @Composable
 private fun ParentGateScreenPreview(@PreviewParameter(ParentGateStateProvider::class) state: ParentGateState) = TeddyTheme {
     ParentGateScreen(state, onIntent = {})
