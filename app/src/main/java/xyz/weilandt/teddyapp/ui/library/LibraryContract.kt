@@ -26,11 +26,13 @@ data class LibraryState(
     val lastRefreshFailed: Boolean = false,
     val isOnline: Boolean = true,
     val playback: PlaybackSnapshot = PlaybackSnapshot(),
+    val needsServerSetup: Boolean = false,
+    val showTitles: Boolean = false,
 ) {
     val content: LibraryContent
         get() = when {
             items.isNotEmpty() -> LibraryContent.Content
-            !hasLoadedCache || isRefreshing -> LibraryContent.Loading
+            !hasLoadedCache || isRefreshing || needsServerSetup -> LibraryContent.Loading
             lastRefreshFailed || !isOnline -> LibraryContent.Error
             else -> LibraryContent.Empty
         }
@@ -63,6 +65,8 @@ sealed interface LibraryIntent {
 sealed interface LibraryResult {
     data class TonieData(val tonies: List<Tonie>, val downloads: Map<String, DownloadInfo>) : LibraryResult
     data class OnlineChanged(val isOnline: Boolean) : LibraryResult
+    data class ServerConfiguredChanged(val configured: Boolean) : LibraryResult
+    data class ShowTitlesChanged(val show: Boolean) : LibraryResult
     data class PlaybackChanged(val snapshot: PlaybackSnapshot) : LibraryResult
     data object RefreshStarted : LibraryResult
     data class RefreshFinished(val success: Boolean) : LibraryResult

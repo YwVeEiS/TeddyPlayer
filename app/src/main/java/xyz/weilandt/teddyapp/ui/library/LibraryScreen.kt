@@ -45,6 +45,7 @@ import xyz.weilandt.teddyapp.ui.components.HoldToOpenButton
 import xyz.weilandt.teddyapp.ui.components.MiniPlayer
 import xyz.weilandt.teddyapp.ui.components.TonieTile
 import xyz.weilandt.teddyapp.ui.preview.SampleData
+import xyz.weilandt.teddyapp.ui.setup.ServerSetupRoute
 import xyz.weilandt.teddyapp.ui.theme.TeddyColors
 import xyz.weilandt.teddyapp.ui.theme.TeddyTheme
 
@@ -72,6 +73,10 @@ fun LibraryRoute(
     }
 
     LibraryScreen(state = state, shakeTriggers = shakeTriggers, onIntent = viewModel::onIntent)
+
+    if (state.needsServerSetup) {
+        ServerSetupRoute()
+    }
 }
 
 @Composable
@@ -105,6 +110,7 @@ fun LibraryScreen(
                 progress = nowPlaying.progress,
                 onOpen = { onIntent(LibraryIntent.OpenPlayer) },
                 onTogglePlayPause = { onIntent(LibraryIntent.TogglePlayPause) },
+                showTitle = state.showTitles,
             )
         }
     }
@@ -152,6 +158,7 @@ private fun TonieGrid(
                 isAvailable = state.isAvailable(item),
                 isNowPlaying = item.tonie.id == playingId,
                 shakeTrigger = shakeTriggers[item.tonie.id] ?: 0,
+                showTitle = state.showTitles,
                 onClick = { onIntent(LibraryIntent.TonieClicked(item.tonie.id)) },
                 modifier = Modifier.animateItem(),
             )
@@ -214,6 +221,8 @@ internal class LibraryStateProvider : PreviewParameterProvider<LibraryState> {
         LibraryState(hasLoadedCache = false),
         LibraryState(hasLoadedCache = true, items = items),
         LibraryState(hasLoadedCache = true, items = items, playback = playing),
+        LibraryState(hasLoadedCache = true, items = items, playback = playing, showTitles = true),
+        LibraryState(hasLoadedCache = true, needsServerSetup = true),
         LibraryState(hasLoadedCache = true, items = items, isOnline = false, playback = playing.copy(isPlaying = false)),
         LibraryState(hasLoadedCache = true, items = emptyList()),
         LibraryState(hasLoadedCache = true, items = emptyList(), lastRefreshFailed = true, isOnline = false),

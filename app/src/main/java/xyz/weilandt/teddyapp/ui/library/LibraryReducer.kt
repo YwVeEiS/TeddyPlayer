@@ -12,6 +12,8 @@ object LibraryReducer {
             },
         )
         is LibraryResult.OnlineChanged -> state.copy(isOnline = result.isOnline)
+        is LibraryResult.ServerConfiguredChanged -> state.copy(needsServerSetup = !result.configured)
+        is LibraryResult.ShowTitlesChanged -> state.copy(showTitles = result.show)
         is LibraryResult.PlaybackChanged -> state.copy(playback = result.snapshot)
         LibraryResult.RefreshStarted -> state.copy(isRefreshing = true)
         is LibraryResult.RefreshFinished -> state.copy(

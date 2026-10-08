@@ -6,6 +6,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,6 +17,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.GraphicEq
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -25,6 +29,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -50,6 +57,7 @@ fun TonieTile(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     shakeTrigger: Int = 0,
+    showTitle: Boolean = false,
 ) {
     val shake = remember { Animatable(0f) }
     LaunchedEffect(shakeTrigger) {
@@ -75,16 +83,35 @@ fun TonieTile(
             .clickable(onClick = onClick)
             .semantics { contentDescription = tonie.displayName },
     ) {
-        TonieCover(
-            tonieId = tonie.id,
-            coverUrl = tonie.coverUrl,
-            contentDescription = null,
+        Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(12.dp)
                 .then(if (isAvailable) Modifier else Modifier.alpha(0.4f)),
-            grayscale = !isAvailable,
-        )
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            TonieCover(
+                tonieId = tonie.id,
+                coverUrl = tonie.coverUrl,
+                contentDescription = null,
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxWidth()
+                    .padding(12.dp),
+                grayscale = !isAvailable,
+            )
+            if (showTitle) {
+                Text(
+                    text = tonie.shortTitle,
+                    style = MaterialTheme.typography.labelLarge,
+                    fontWeight = FontWeight.Bold,
+                    color = TeddyColors.Ink,
+                    textAlign = TextAlign.Center,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.padding(start = 10.dp, end = 10.dp, bottom = 10.dp),
+                )
+            }
+        }
         DownloadBadge(
             status = downloadStatus,
             isUnavailable = !isAvailable,
@@ -98,8 +125,8 @@ fun TonieTile(
                 contentDescription = null,
                 tint = TeddyColors.Primary,
                 modifier = Modifier
-                    .align(Alignment.BottomStart)
-                    .padding(10.dp),
+                    .align(Alignment.TopStart)
+                    .padding(12.dp),
             )
         }
     }
@@ -135,5 +162,14 @@ private fun TonieTileNowPlayingPreview() = TeddyTheme {
     Row {
         TonieTile(SampleData.sandman, DownloadStatus.Completed, isAvailable = true, isNowPlaying = true, onClick = {}, modifier = Modifier.width(170.dp).padding(8.dp))
         TonieTile(SampleData.custom, DownloadStatus.Failed, isAvailable = true, isNowPlaying = false, onClick = {}, modifier = Modifier.width(170.dp).padding(8.dp))
+    }
+}
+
+@Preview(showBackground = true, widthDp = 360)
+@Composable
+private fun TonieTileWithTitlePreview() = TeddyTheme {
+    Row {
+        TonieTile(SampleData.bobo, DownloadStatus.Completed, isAvailable = true, isNowPlaying = false, onClick = {}, modifier = Modifier.width(170.dp).padding(8.dp), showTitle = true)
+        TonieTile(SampleData.frozen, DownloadStatus.None, isAvailable = false, isNowPlaying = false, onClick = {}, modifier = Modifier.width(170.dp).padding(8.dp), showTitle = true)
     }
 }

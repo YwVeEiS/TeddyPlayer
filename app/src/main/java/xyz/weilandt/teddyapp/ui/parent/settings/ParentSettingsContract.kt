@@ -27,6 +27,7 @@ data class ParentSettingsState(
     val downloads: List<DownloadEntry> = emptyList(),
     val usedBytes: Long = 0L,
     val confirmDeleteAll: Boolean = false,
+    val showTitles: Boolean = false,
 ) {
     val isUrlChanged: Boolean get() = serverUrlInput.trim() != savedServerUrl
 }
@@ -34,6 +35,7 @@ data class ParentSettingsState(
 sealed interface ParentSettingsIntent {
     data class UrlChanged(val url: String) : ParentSettingsIntent
     data object SaveUrl : ParentSettingsIntent
+    data class ShowTitlesChanged(val show: Boolean) : ParentSettingsIntent
     data object Refresh : ParentSettingsIntent
     data class DeleteDownload(val tonieId: String) : ParentSettingsIntent
     data object DeleteAllRequested : ParentSettingsIntent
@@ -53,6 +55,7 @@ sealed interface ParentSettingsResult {
         val usedBytes: Long,
     ) : ParentSettingsResult
     data class ConfirmDeleteAll(val visible: Boolean) : ParentSettingsResult
+    data class ShowTitles(val show: Boolean) : ParentSettingsResult
 }
 
 sealed interface ParentSettingsEffect {
@@ -82,5 +85,6 @@ object ParentSettingsReducer {
             )
         }
         is ParentSettingsResult.ConfirmDeleteAll -> state.copy(confirmDeleteAll = result.visible)
+        is ParentSettingsResult.ShowTitles -> state.copy(showTitles = result.show)
     }
 }

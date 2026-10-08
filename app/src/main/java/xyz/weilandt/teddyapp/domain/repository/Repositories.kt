@@ -30,7 +30,15 @@ interface PlaybackProgressRepository {
 
 interface SettingsRepository {
     val serverUrl: Flow<String>
+
+    /** `false` bis Eltern bei der Ersteinrichtung eine Adresse gespeichert haben. */
+    val isServerConfigured: Flow<Boolean>
+
+    /** Titel unter Covern anzeigen (für Kinder, die schon lesen können). */
+    val showTitles: Flow<Boolean>
+
     suspend fun setServerUrl(url: String)
+    suspend fun setShowTitles(show: Boolean)
 }
 
 interface DownloadRepository {

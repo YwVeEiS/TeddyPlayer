@@ -17,6 +17,10 @@ data class Tonie(
     val audioPath: String,
     val chapterStartsMs: List<Long>,
 ) {
+    /** Kurzer Titel für die Anzeige unter dem Cover. */
+    val shortTitle: String
+        get() = title.ifBlank { series }
+
     /** Name für Eltern/TalkBack – Kinder sehen nur das Cover. */
     val displayName: String
         get() = when {

@@ -13,6 +13,7 @@ import xyz.weilandt.teddyapp.core.mvi.MviViewModel
 import xyz.weilandt.teddyapp.domain.repository.DownloadRepository
 import xyz.weilandt.teddyapp.domain.repository.NetworkMonitor
 import xyz.weilandt.teddyapp.domain.repository.PlaybackController
+import xyz.weilandt.teddyapp.domain.repository.SettingsRepository
 import xyz.weilandt.teddyapp.domain.repository.ToniesRepository
 
 class LibraryViewModel(
@@ -20,6 +21,7 @@ class LibraryViewModel(
     private val downloads: DownloadRepository,
     private val playback: PlaybackController,
     network: NetworkMonitor,
+    settings: SettingsRepository,
 ) : MviViewModel<LibraryState, LibraryIntent, LibraryResult, LibraryEffect>(LibraryState()) {
 
     private var refreshJob: Job? = null
@@ -38,10 +40,21 @@ class LibraryViewModel(
             .onEach { dispatch(LibraryResult.PlaybackChanged(it)) }
             .launchIn(viewModelScope)
 
-        // Sobald Netz da ist: laden. Ist der Server nicht erreichbar, regelmäßig erneut versuchen.
+        settings.isServerConfigured
+            .onEach { dispatch(LibraryResult.ServerConfiguredChanged(it)) }
+            .launchIn(viewModelScope)
+
+        settings.showTitles
+            .onEach { dispatch(LibraryResult.ShowTitlesChanged(it)) }
+            .launchIn(viewModelScope)
+
+        // Sobald Netz da und der Server eingerichtet ist: laden.
+        // Ist der Server nicht erreichbar, regelmäßig erneut versuchen.
         viewModelScope.launch {
-            network.isNetworkAvailable.distinctUntilChanged().collectLatest { available ->
-                if (!available) return@collectLatest
+            combine(network.isNetworkAvailable, settings.isServerConfigured) { available, configured ->
+                available && configured
+            }.distinctUntilChanged().collectLatest { canLoad ->
+                if (!canLoad) return@collectLatest
                 refresh()?.join()
                 while (tonies.isServerReachable.value == false) {
                     delay(RETRY_INTERVAL_MS)
@@ -56,7 +69,7 @@ class LibraryViewModel(
             is LibraryIntent.TonieClicked -> onTonieClicked(intent.tonieId)
             LibraryIntent.TogglePlayPause -> playback.togglePlayPause()
             LibraryIntent.OpenPlayer -> emit(LibraryEffect.NavigateToPlayer)
-            LibraryIntent.Retry -> refresh()
+            LibraryIntent.Retry -> if (!state.value.needsServerSetup) refresh()
             LibraryIntent.OpenParentArea -> emit(LibraryEffect.NavigateToParentGate)
         }
     }

@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
@@ -30,6 +31,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
@@ -40,6 +42,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
@@ -49,6 +52,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.compose.viewmodel.koinViewModel
 import xyz.weilandt.teddyapp.domain.model.DownloadStatus
+import xyz.weilandt.teddyapp.domain.model.ServerUrl
 import xyz.weilandt.teddyapp.ui.components.DownloadBadge
 import xyz.weilandt.teddyapp.ui.components.TonieCover
 import xyz.weilandt.teddyapp.ui.preview.SampleData
@@ -101,6 +105,13 @@ fun ParentSettingsScreen(
         ) {
             item { ServerSection(state, onIntent) }
             item { HorizontalDivider() }
+            item {
+                DisplaySection(
+                    showTitles = state.showTitles,
+                    onShowTitlesChange = { onIntent(ParentSettingsIntent.ShowTitlesChanged(it)) },
+                )
+            }
+            item { HorizontalDivider() }
             item { StorageSection(state, onIntent) }
             items(state.downloads, key = { it.tonie.id }) { entry ->
                 DownloadRow(entry, onDelete = { onIntent(ParentSettingsIntent.DeleteDownload(entry.tonie.id)) })
@@ -140,7 +151,7 @@ private fun ServerSection(state: ParentSettingsState, onIntent: (ParentSettingsI
             value = state.serverUrlInput,
             onValueChange = { onIntent(ParentSettingsIntent.UrlChanged(it)) },
             label = { Text("Adresse") },
-            placeholder = { Text("http://192.168.1.50") },
+            placeholder = { Text(ServerUrl.DEFAULT) },
             singleLine = true,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri, imeAction = ImeAction.Done),
             modifier = Modifier.fillMaxWidth(),
@@ -165,6 +176,27 @@ private fun ServerSection(state: ParentSettingsState, onIntent: (ParentSettingsI
             }
         }
         ConnectionStatus(state.connection, state.tonieCount)
+    }
+}
+
+@Composable
+private fun DisplaySection(showTitles: Boolean, onShowTitlesChange: (Boolean) -> Unit) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .fillMaxWidth()
+            .toggleable(value = showTitles, role = Role.Switch, onValueChange = onShowTitlesChange),
+    ) {
+        Column(Modifier.weight(1f)) {
+            Text("Titel anzeigen", style = MaterialTheme.typography.titleMedium)
+            Text(
+                "Zeigt die Namen unter den Tonies und im Player – für Kinder, die schon lesen können.",
+                style = MaterialTheme.typography.bodyMedium,
+                color = TeddyColors.Muted,
+            )
+        }
+        Spacer(Modifier.width(12.dp))
+        Switch(checked = showTitles, onCheckedChange = null)
     }
 }
 
@@ -230,14 +262,15 @@ internal class ParentSettingsStateProvider : PreviewParameterProvider<ParentSett
         DownloadEntry(SampleData.custom, DownloadStatus.Failed, 1_000_000),
     )
     private val base = ParentSettingsState(
-        serverUrlInput = "http://192.168.1.50",
-        savedServerUrl = "http://192.168.1.50",
+        serverUrlInput = "http://tc",
+        savedServerUrl = "http://tc",
         tonieCount = 62,
     )
 
     override val values = sequenceOf(
         base,
         base.copy(downloads = downloads, usedBytes = 59_000_000),
+        base.copy(showTitles = true),
         base.copy(serverUrlInput = "192.168.1.20", connection = ConnectionTest.Testing),
         base.copy(connection = ConnectionTest.Success(62), isRefreshing = true),
         base.copy(connection = ConnectionTest.Failed),

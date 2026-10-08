@@ -41,6 +41,7 @@ import xyz.weilandt.teddyapp.ui.library.LibraryViewModel
 import xyz.weilandt.teddyapp.ui.parent.gate.ParentGateViewModel
 import xyz.weilandt.teddyapp.ui.parent.settings.ParentSettingsViewModel
 import xyz.weilandt.teddyapp.ui.player.PlayerViewModel
+import xyz.weilandt.teddyapp.ui.setup.ServerSetupViewModel
 
 private val Context.settingsDataStore by preferencesDataStore(name = "settings")
 
@@ -96,6 +97,7 @@ val uiModule = module {
     viewModelOf(::PlayerViewModel)
     viewModel { ParentGateViewModel() }
     viewModelOf(::ParentSettingsViewModel)
+    viewModelOf(::ServerSetupViewModel)
 }
 
 val appModules = listOf(dataModule, playbackModule, uiModule)

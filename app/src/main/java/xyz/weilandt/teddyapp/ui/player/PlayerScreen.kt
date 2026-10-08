@@ -23,11 +23,16 @@ import androidx.compose.material.icons.rounded.SkipNext
 import androidx.compose.material.icons.rounded.SkipPrevious
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
@@ -107,6 +112,28 @@ fun PlayerScreen(
             }
         }
 
+        if (state.showTitles) {
+            Text(
+                text = tonie.shortTitle,
+                style = MaterialTheme.typography.headlineSmall,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+            )
+            if (tonie.series.isNotBlank() && tonie.series != tonie.shortTitle) {
+                Text(
+                    text = tonie.series,
+                    style = MaterialTheme.typography.titleMedium,
+                    color = TeddyColors.Muted,
+                    textAlign = TextAlign.Center,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+            }
+            Spacer(Modifier.height(16.dp))
+        }
+
         ChapterDots(
             chapterCount = state.chapterCount,
             currentChapter = state.currentChapter,
@@ -175,6 +202,7 @@ internal class PlayerStateProvider : PreviewParameterProvider<PlayerState> {
         base.copy(isBuffering = true),
         base.copy(hasError = true),
         base.copy(isPlaying = true, currentChapter = 4, chapterProgress = 0.9f),
+        base.copy(isPlaying = true, showTitles = true),
         PlayerState(),
     )
 }

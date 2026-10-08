@@ -88,6 +88,16 @@ class ParentSettingsViewModelTest {
     }
 
     @Test
+    fun `titles can be switched on and off`() {
+        vm.onIntent(ParentSettingsIntent.ShowTitlesChanged(true))
+        assertTrue(settings.titles.value)
+        assertTrue(vm.state.value.showTitles)
+
+        vm.onIntent(ParentSettingsIntent.ShowTitlesChanged(false))
+        assertFalse(vm.state.value.showTitles)
+    }
+
+    @Test
     fun `single download can be removed`() {
         vm.onIntent(ParentSettingsIntent.DeleteDownload("a"))
         assertEquals(listOf("a"), downloads.removed)

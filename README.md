@@ -10,7 +10,8 @@ heruntergeladen. Danach geht er auch offline.
 - **Player**: ⏮ / ⏯ / ⏭ springen zwischen Kapiteln; die Punkte zeigen die Kapitel (antippbar).
   Beim nächsten Abspielen geht es an der letzten Stelle weiter.
 - **Elternbereich**: Zahnrad oben rechts **3 Sekunden gedrückt halten**, dann eine Einmaleins-Aufgabe lösen.
-  Dort lassen sich die Server-Adresse (Standard `http://192.168.1.50`) und die Downloads verwalten.
+  Dort lassen sich die Server-Adresse, „Titel anzeigen“ und die Downloads verwalten.
+- **Ersteinrichtung**: Beim ersten Start fragt ein Dialog nach der Server-Adresse (vorausgefüllt: `http://tc`).
 
 ## Technik
 Kotlin, Jetpack Compose, MVI (`core/mvi/MviViewModel` + reine Reducer), Koin, Ktor, Room, DataStore,

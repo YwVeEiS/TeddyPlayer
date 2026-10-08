@@ -122,10 +122,18 @@ class FakeNetworkMonitor(available: Boolean = true) : NetworkMonitor {
     override val isNetworkAvailable: Flow<Boolean> = this.available
 }
 
-class FakeSettingsRepository(url: String = "http://server") : SettingsRepository {
+class FakeSettingsRepository(url: String = "http://server", configured: Boolean = true) : SettingsRepository {
     val url = MutableStateFlow(url)
+    val configured = MutableStateFlow(configured)
+    val titles = MutableStateFlow(false)
     override val serverUrl: Flow<String> = this.url
-    override suspend fun setServerUrl(url: String) { this.url.value = url }
+    override val isServerConfigured: Flow<Boolean> = this.configured
+    override val showTitles: Flow<Boolean> = titles
+    override suspend fun setServerUrl(url: String) {
+        this.url.value = url
+        configured.value = true
+    }
+    override suspend fun setShowTitles(show: Boolean) { titles.value = show }
 }
 
 class FakeTonieDao : TonieDao {

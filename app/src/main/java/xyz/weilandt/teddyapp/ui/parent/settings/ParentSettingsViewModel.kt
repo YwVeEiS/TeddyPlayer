@@ -24,6 +24,10 @@ class ParentSettingsViewModel(
             .onEach { dispatch(ParentSettingsResult.SavedUrl(it)) }
             .launchIn(viewModelScope)
 
+        settings.showTitles
+            .onEach { dispatch(ParentSettingsResult.ShowTitles(it)) }
+            .launchIn(viewModelScope)
+
         combine(tonies.observeTonies(), downloads.downloads, downloads.usedBytes, ParentSettingsResult::Data)
             .onEach(::dispatch)
             .launchIn(viewModelScope)
@@ -33,6 +37,7 @@ class ParentSettingsViewModel(
         when (intent) {
             is ParentSettingsIntent.UrlChanged -> dispatch(ParentSettingsResult.UrlInput(intent.url))
             ParentSettingsIntent.SaveUrl -> saveUrl()
+            is ParentSettingsIntent.ShowTitlesChanged -> viewModelScope.launch { settings.setShowTitles(intent.show) }
             ParentSettingsIntent.Refresh -> refresh()
             is ParentSettingsIntent.DeleteDownload -> downloads.remove(intent.tonieId)
             ParentSettingsIntent.DeleteAllRequested -> dispatch(ParentSettingsResult.ConfirmDeleteAll(true))

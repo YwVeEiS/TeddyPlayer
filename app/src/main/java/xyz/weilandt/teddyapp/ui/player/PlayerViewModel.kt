@@ -6,11 +6,13 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import xyz.weilandt.teddyapp.core.mvi.MviViewModel
 import xyz.weilandt.teddyapp.domain.repository.PlaybackController
+import xyz.weilandt.teddyapp.domain.repository.SettingsRepository
 import xyz.weilandt.teddyapp.domain.repository.ToniesRepository
 
 class PlayerViewModel(
     private val playback: PlaybackController,
     tonies: ToniesRepository,
+    settings: SettingsRepository,
 ) : MviViewModel<PlayerState, PlayerIntent, PlayerResult, PlayerEffect>(PlayerState()) {
 
     init {
@@ -18,6 +20,10 @@ class PlayerViewModel(
             PlayerResult.Playback(snapshot, list.firstOrNull { it.id == snapshot.tonieId })
         }
             .onEach(::dispatch)
+            .launchIn(viewModelScope)
+
+        settings.showTitles
+            .onEach { dispatch(PlayerResult.ShowTitles(it)) }
             .launchIn(viewModelScope)
     }
 

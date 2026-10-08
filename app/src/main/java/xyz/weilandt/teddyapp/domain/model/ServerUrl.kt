@@ -1,7 +1,7 @@
 package xyz.weilandt.teddyapp.domain.model
 
 object ServerUrl {
-    const val DEFAULT = "http://192.168.1.50"
+    const val DEFAULT = "http://tc"
 
     /**
      * Macht aus Eingaben wie `192.168.1.50/web/` eine Basis-URL `http://192.168.1.50`.

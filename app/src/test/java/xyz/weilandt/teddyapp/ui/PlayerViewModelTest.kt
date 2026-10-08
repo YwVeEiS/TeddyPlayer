@@ -10,6 +10,7 @@ import org.junit.Rule
 import org.junit.Test
 import xyz.weilandt.teddyapp.domain.model.PlaybackSnapshot
 import xyz.weilandt.teddyapp.fakes.FakePlaybackController
+import xyz.weilandt.teddyapp.fakes.FakeSettingsRepository
 import xyz.weilandt.teddyapp.fakes.FakeToniesRepository
 import xyz.weilandt.teddyapp.fakes.MainDispatcherRule
 import xyz.weilandt.teddyapp.fakes.tonie
@@ -24,7 +25,8 @@ class PlayerViewModelTest {
 
     private val a = tonie("a", chapters = listOf(0L, 10_000L, 20_000L))
     private val playback = FakePlaybackController()
-    private val vm by lazy { PlayerViewModel(playback, FakeToniesRepository(listOf(a))) }
+    private val settings = FakeSettingsRepository()
+    private val vm by lazy { PlayerViewModel(playback, FakeToniesRepository(listOf(a)), settings) }
 
     @Test
     fun `state shows nothing while nothing plays`() {
@@ -47,6 +49,13 @@ class PlayerViewModelTest {
         assertEquals(1, state.currentChapter)
         assertEquals(0.5f, state.chapterProgress, 0.001f)
         assertTrue(state.canGoNext)
+    }
+
+    @Test
+    fun `titles setting is reflected in state`() {
+        assertFalse(vm.state.value.showTitles)
+        settings.titles.value = true
+        assertTrue(vm.state.value.showTitles)
     }
 
     @Test

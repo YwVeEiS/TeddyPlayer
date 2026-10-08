@@ -11,6 +11,7 @@ data class PlayerState(
     val chapterCount: Int = 1,
     val currentChapter: Int = 0,
     val chapterProgress: Float = 0f,
+    val showTitles: Boolean = false,
 ) {
     val canGoNext: Boolean get() = currentChapter < chapterCount - 1
 }
@@ -25,6 +26,7 @@ sealed interface PlayerIntent {
 
 sealed interface PlayerResult {
     data class Playback(val snapshot: PlaybackSnapshot, val tonie: Tonie?) : PlayerResult
+    data class ShowTitles(val show: Boolean) : PlayerResult
 }
 
 sealed interface PlayerEffect {
@@ -45,5 +47,6 @@ object PlayerReducer {
                 chapterProgress = s.chapterProgress,
             )
         }
+        is PlayerResult.ShowTitles -> state.copy(showTitles = result.show)
     }
 }
