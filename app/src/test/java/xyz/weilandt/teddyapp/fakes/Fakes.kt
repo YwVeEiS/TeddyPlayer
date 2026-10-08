@@ -98,6 +98,7 @@ class FakeDownloadRepository : DownloadRepository {
     override suspend fun download(tonie: Tonie) = set(tonie.id, DownloadStatus.Queued)
     override fun remove(tonieId: String) { removed += tonieId }
     override fun removeAll() { removedAll = true }
+    override fun resumePending() = Unit
 }
 
 class FakePlaybackController : PlaybackController {

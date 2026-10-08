@@ -58,7 +58,8 @@ interface TonieDao {
         SELECT t.* FROM tonies t
         LEFT JOIN playback_progress p ON p.tonieId = t.id
         ORDER BY p.lastPlayedAt IS NULL, p.lastPlayedAt DESC,
-                 t.series COLLATE NOCASE, t.title COLLATE NOCASE
+                 t.coverUrl IS NULL,
+                 t.series = '', t.series COLLATE NOCASE, t.title COLLATE NOCASE
         """
     )
     fun observeAll(): Flow<List<TonieEntity>>

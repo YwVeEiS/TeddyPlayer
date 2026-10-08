@@ -23,6 +23,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.guava.await
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import xyz.weilandt.teddyapp.domain.model.Chapters
 import xyz.weilandt.teddyapp.domain.model.PlaybackSnapshot
 import xyz.weilandt.teddyapp.domain.model.ServerUrl
 import xyz.weilandt.teddyapp.domain.model.Tonie
@@ -114,9 +115,15 @@ class MediaPlaybackController(
         }
     }
 
-    override fun nextChapter() = withController { it.seekToNext() }
+    // Bewusst seekTo statt seekToNext: der MediaController leitet seekToNext bei einer
+    // einzelnen Datei nicht an die Session weiter.
+    override fun nextChapter() = withController { c ->
+        Chapters.nextStart(_state.value.chapterStartsMs, c.currentPosition)?.let(c::seekTo)
+    }
 
-    override fun previousChapter() = withController { it.seekToPrevious() }
+    override fun previousChapter() = withController { c ->
+        c.seekTo(Chapters.previousTarget(_state.value.chapterStartsMs, c.currentPosition))
+    }
 
     override fun seekToChapter(index: Int) = withController { c ->
         _state.value.chapterStartsMs.getOrNull(index)?.let(c::seekTo)

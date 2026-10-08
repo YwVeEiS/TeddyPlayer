@@ -45,6 +45,8 @@ class ChaptersTest {
     fun `progressInChapter uses next chapter start or duration as end`() {
         assertEquals(0.5f, Chapters.progressInChapter(starts, 90_000L, 240_000L), 0.001f)
         assertEquals(0.5f, Chapters.progressInChapter(starts, 210_000L, 240_000L), 0.001f)
-        assertEquals(0f, Chapters.progressInChapter(starts, 10_000L, 0L), 0.001f)
+        // unbekannte Dauer: nur im letzten Kapitel kein Fortschritt
+        assertEquals(0.5f, Chapters.progressInChapter(starts, 30_000L, 0L), 0.001f)
+        assertEquals(0f, Chapters.progressInChapter(starts, 200_000L, 0L), 0.001f)
     }
 }

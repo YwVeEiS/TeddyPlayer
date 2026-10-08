@@ -32,10 +32,10 @@ object Chapters {
 
     /** Fortschritt innerhalb des aktuellen Kapitels (0..1). */
     fun progressInChapter(starts: List<Long>, positionMs: Long, durationMs: Long): Float {
-        if (durationMs <= 0L) return 0f
         val idx = indexAt(starts, positionMs)
         val start = starts.getOrElse(idx) { 0L }
-        val end = starts.getOrNull(idx + 1) ?: durationMs
+        // Die Gesamtdauer wird nur fürs letzte Kapitel gebraucht (bei Ogg anfangs oft unbekannt)
+        val end = starts.getOrNull(idx + 1) ?: durationMs.takeIf { it > 0L } ?: return 0f
         val length = end - start
         if (length <= 0L) return 0f
         return ((positionMs - start).toFloat() / length).coerceIn(0f, 1f)

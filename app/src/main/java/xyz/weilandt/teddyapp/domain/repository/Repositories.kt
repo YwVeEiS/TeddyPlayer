@@ -7,7 +7,7 @@ import xyz.weilandt.teddyapp.domain.model.PlaybackSnapshot
 import xyz.weilandt.teddyapp.domain.model.Tonie
 
 interface ToniesRepository {
-    /** Tonies aus dem lokalen Cache: zuletzt gehörte zuerst, danach nach Serie und Titel. */
+    /** Tonies aus dem lokalen Cache: zuletzt gehörte zuerst, danach nach Serie und Titel, ohne Cover am Ende. */
     fun observeTonies(): Flow<List<Tonie>>
 
     /** `null` = noch unbekannt, sonst Ergebnis der letzten Server-Anfrage. */
@@ -39,6 +39,9 @@ interface DownloadRepository {
     suspend fun download(tonie: Tonie)
     fun remove(tonieId: String)
     fun removeAll()
+
+    /** Unterbrochene Downloads fortsetzen (z. B. nach App-Neustart). */
+    fun resumePending()
 }
 
 interface PlaybackController {

@@ -68,6 +68,19 @@ class Media3DownloadRepository(
             }
         })
         if (downloadManager.isInitialized) loadAll()
+        downloadManager.resumeDownloads()
+    }
+
+    /**
+     * Setzt nach einem Prozess-Neustart unterbrochene Downloads fort.
+     * Nur aus dem Vordergrund aufrufen (Android verbietet Service-Starts im Hintergrund).
+     */
+    override fun resumePending() {
+        try {
+            DownloadService.start(context, TeddyDownloadService::class.java)
+        } catch (e: IllegalStateException) {
+            // App war doch nicht im Vordergrund – beim nächsten Abspielen geht es weiter
+        }
     }
 
     override suspend fun download(tonie: Tonie) {
