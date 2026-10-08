@@ -20,9 +20,10 @@ class ServerSetupViewModel(
     override fun onIntent(intent: ServerSetupIntent) {
         when (intent) {
             is ServerSetupIntent.UrlChanged -> dispatch(ServerSetupResult.UrlInput(intent.url))
+            is ServerSetupIntent.ShowTitlesChanged -> dispatch(ServerSetupResult.ShowTitles(intent.show))
             ServerSetupIntent.Connect -> connect()
             ServerSetupIntent.SaveAnyway -> normalizedUrl()?.let { url ->
-                viewModelScope.launch { settings.setServerUrl(url) }
+                viewModelScope.launch { save(url) }
             }
         }
     }
@@ -35,11 +36,17 @@ class ServerSetupViewModel(
             val result = tonies.testConnection(url)
             if (result.isSuccess) {
                 dispatch(ServerSetupResult.Connection(ConnectionTest.Success(result.getOrDefault(0))))
-                settings.setServerUrl(url)
+                save(url)
             } else {
                 dispatch(ServerSetupResult.Connection(ConnectionTest.Failed))
             }
         }
+    }
+
+    /** Titel zuerst speichern – das Speichern der Adresse schließt den Dialog. */
+    private suspend fun save(url: String) {
+        settings.setShowTitles(state.value.showTitles)
+        settings.setServerUrl(url)
     }
 
     private fun normalizedUrl(): String? {

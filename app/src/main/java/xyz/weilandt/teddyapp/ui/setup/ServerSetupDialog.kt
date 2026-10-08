@@ -2,8 +2,12 @@ package xyz.weilandt.teddyapp.ui.setup
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -14,11 +18,14 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
@@ -65,6 +72,28 @@ fun ServerSetupDialog(
                     modifier = Modifier.fillMaxWidth(),
                 )
                 SetupStatus(state.connection)
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .toggleable(
+                            value = state.showTitles,
+                            role = Role.Switch,
+                            enabled = !state.isTesting,
+                            onValueChange = { onIntent(ServerSetupIntent.ShowTitlesChanged(it)) },
+                        ),
+                ) {
+                    Column(Modifier.weight(1f)) {
+                        Text("Titel anzeigen", style = MaterialTheme.typography.titleSmall)
+                        Text(
+                            "Namen unter den Tonies – für Kinder, die schon lesen können. Später im Elternbereich änderbar.",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = TeddyColors.Muted,
+                        )
+                    }
+                    Spacer(Modifier.width(12.dp))
+                    Switch(checked = state.showTitles, onCheckedChange = null, enabled = !state.isTesting)
+                }
             }
         },
         confirmButton = {
@@ -98,6 +127,7 @@ private fun SetupStatus(connection: ConnectionTest) {
 internal class ServerSetupStateProvider : PreviewParameterProvider<ServerSetupState> {
     override val values = sequenceOf(
         ServerSetupState(),
+        ServerSetupState(showTitles = true),
         ServerSetupState(connection = ConnectionTest.Testing),
         ServerSetupState(urlInput = "http://192.168.1.20", connection = ConnectionTest.Failed),
         ServerSetupState(urlInput = "", connection = ConnectionTest.InvalidUrl),
@@ -105,7 +135,7 @@ internal class ServerSetupStateProvider : PreviewParameterProvider<ServerSetupSt
     )
 }
 
-@Preview(showBackground = true, widthDp = 400, heightDp = 600)
+@Preview(showBackground = true, widthDp = 400, heightDp = 720)
 @Composable
 private fun ServerSetupDialogPreview(@PreviewParameter(ServerSetupStateProvider::class) state: ServerSetupState) = TeddyTheme {
     ServerSetupDialog(state, onIntent = {})

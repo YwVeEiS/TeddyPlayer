@@ -55,6 +55,30 @@ class ServerSetupViewModelTest {
     }
 
     @Test
+    fun `titles are off by default and saved with the server`() {
+        assertFalse(vm.state.value.showTitles)
+        tonies.testResult = Result.success(1)
+
+        vm.onIntent(ServerSetupIntent.ShowTitlesChanged(true))
+        assertTrue(vm.state.value.showTitles)
+        assertFalse("erst beim Speichern übernehmen", settings.titles.value)
+
+        vm.onIntent(ServerSetupIntent.Connect)
+        assertTrue(settings.titles.value)
+    }
+
+    @Test
+    fun `titles choice is also saved when saving anyway`() {
+        tonies.testResult = Result.failure(Exception())
+        vm.onIntent(ServerSetupIntent.ShowTitlesChanged(true))
+        vm.onIntent(ServerSetupIntent.Connect)
+        assertFalse(settings.titles.value)
+
+        vm.onIntent(ServerSetupIntent.SaveAnyway)
+        assertTrue(settings.titles.value)
+    }
+
+    @Test
     fun `blank input is rejected`() {
         vm.onIntent(ServerSetupIntent.UrlChanged(" "))
         vm.onIntent(ServerSetupIntent.Connect)
