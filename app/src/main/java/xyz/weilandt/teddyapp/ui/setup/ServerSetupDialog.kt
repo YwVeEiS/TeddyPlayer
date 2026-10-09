@@ -39,6 +39,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.compose.viewmodel.koinViewModel
 import xyz.weilandt.teddyapp.R
 import xyz.weilandt.teddyapp.domain.model.ServerUrl
+import xyz.weilandt.teddyapp.ui.components.rememberNotificationPermission
 import xyz.weilandt.teddyapp.ui.parent.settings.ConnectionTest
 import xyz.weilandt.teddyapp.ui.theme.TeddyColors
 import xyz.weilandt.teddyapp.ui.theme.TeddyTheme
@@ -46,7 +47,14 @@ import xyz.weilandt.teddyapp.ui.theme.TeddyTheme
 @Composable
 fun ServerSetupRoute(viewModel: ServerSetupViewModel = koinViewModel()) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    ServerSetupDialog(state, viewModel::onIntent)
+    // Ask while a parent sets up the app – the download notification needs it
+    val notifications = rememberNotificationPermission()
+    ServerSetupDialog(state) { intent ->
+        if (intent is ServerSetupIntent.Connect || intent is ServerSetupIntent.SaveAnyway) {
+            notifications?.takeUnless { it.isGranted }?.request()
+        }
+        viewModel.onIntent(intent)
+    }
 }
 
 /** Shown on first launch; can't be dismissed until an address has been saved. */

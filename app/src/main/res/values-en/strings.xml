@@ -51,6 +51,9 @@
     </plurals>
     <string name="settings_connecting">Connecting …</string>
     <string name="settings_connection_failed">Server not reachable</string>
+    <string name="settings_notifications">Notifications</string>
+    <string name="settings_notifications_hint">Shows download progress in the notification bar.</string>
+    <string name="settings_notifications_allow">Allow</string>
     <string name="settings_saved_offline">Saved offline</string>
     <plurals name="settings_downloads_summary">
         <item quantity="one">%1$d story · %2$s</item>

@@ -60,7 +60,9 @@ import xyz.weilandt.teddyapp.R
 import xyz.weilandt.teddyapp.domain.model.DownloadStatus
 import xyz.weilandt.teddyapp.domain.model.ServerUrl
 import xyz.weilandt.teddyapp.ui.components.DownloadBadge
+import xyz.weilandt.teddyapp.ui.components.NotificationPermission
 import xyz.weilandt.teddyapp.ui.components.TonieCover
+import xyz.weilandt.teddyapp.ui.components.rememberNotificationPermission
 import xyz.weilandt.teddyapp.ui.preview.SampleData
 import xyz.weilandt.teddyapp.ui.theme.TeddyColors
 import xyz.weilandt.teddyapp.ui.theme.TeddyTheme
@@ -78,7 +80,7 @@ fun ParentSettingsRoute(
             }
         }
     }
-    ParentSettingsScreen(state, viewModel::onIntent)
+    ParentSettingsScreen(state, viewModel::onIntent, rememberNotificationPermission(openSettingsWhenBlocked = true))
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -86,6 +88,7 @@ fun ParentSettingsRoute(
 fun ParentSettingsScreen(
     state: ParentSettingsState,
     onIntent: (ParentSettingsIntent) -> Unit,
+    notifications: NotificationPermission? = null,
 ) {
     Scaffold(
         topBar = {
@@ -122,6 +125,10 @@ fun ParentSettingsScreen(
                 )
             }
             item { HorizontalDivider() }
+            if (notifications != null && !notifications.isGranted) {
+                item { NotificationSection(onAllow = notifications::request) }
+                item { HorizontalDivider() }
+            }
             item { StorageSection(state, onIntent) }
             items(state.downloads, key = { it.tonie.id }) { entry ->
                 DownloadRow(entry, onDelete = { onIntent(ParentSettingsIntent.DeleteDownload(entry.tonie.id)) })
@@ -217,6 +224,22 @@ private fun DisplaySection(showTitles: Boolean, onShowTitlesChange: (Boolean) ->
 }
 
 @Composable
+private fun NotificationSection(onAllow: () -> Unit) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Column(Modifier.weight(1f)) {
+            Text(stringResource(R.string.settings_notifications), style = MaterialTheme.typography.titleMedium)
+            Text(
+                stringResource(R.string.settings_notifications_hint),
+                style = MaterialTheme.typography.bodyMedium,
+                color = TeddyColors.Muted,
+            )
+        }
+        Spacer(Modifier.width(12.dp))
+        OutlinedButton(onClick = onAllow) { Text(stringResource(R.string.settings_notifications_allow)) }
+    }
+}
+
+@Composable
 private fun ConnectionStatus(connection: ConnectionTest, tonieCount: Int) {
     val (text, color) = when (connection) {
         ConnectionTest.Idle -> pluralStringResource(R.plurals.settings_stories_in_app, tonieCount, tonieCount) to TeddyColors.Muted
@@ -303,4 +326,14 @@ private fun ParentSettingsScreenPreview(
     @PreviewParameter(ParentSettingsStateProvider::class) state: ParentSettingsState,
 ) = TeddyTheme {
     ParentSettingsScreen(state, onIntent = {})
+}
+
+@Preview(name = "Benachrichtigungen fehlen", showBackground = true, widthDp = 400, heightDp = 860)
+@Composable
+private fun ParentSettingsNotificationsPreview() = TeddyTheme {
+    ParentSettingsScreen(
+        state = ParentSettingsState(serverUrlInput = "http://tc", savedServerUrl = "http://tc", tonieCount = 62),
+        onIntent = {},
+        notifications = NotificationPermission(isGranted = false) {},
+    )
 }

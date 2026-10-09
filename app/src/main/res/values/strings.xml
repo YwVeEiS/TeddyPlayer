@@ -52,6 +52,9 @@
     </plurals>
     <string name="settings_connecting">Verbinde …</string>
     <string name="settings_connection_failed">Server nicht erreichbar</string>
+    <string name="settings_notifications">Benachrichtigungen</string>
+    <string name="settings_notifications_hint">Zeigt den Fortschritt von Downloads in der Benachrichtigungsleiste.</string>
+    <string name="settings_notifications_allow">Erlauben</string>
     <string name="settings_saved_offline">Offline gespeichert</string>
     <plurals name="settings_downloads_summary">
         <item quantity="one">%1$d Hörspiel · %2$s</item>
