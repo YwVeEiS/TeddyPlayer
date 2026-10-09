@@ -4,21 +4,20 @@
 
 A kid-friendly Android player for your own [TeddyCloud](https://github.com/toniebox-reverse-engineering/teddycloud) server.
 
-All Tonies stored on your TeddyCloud server show up as big cover tiles. Tap one and it plays. Just like on the
-Toniebox, the audio is downloaded while it plays, so it also works offline afterwards (in the car, on holiday, …).
+All stories stored on your TeddyCloud server show up as big cover tiles. Tap one and it plays. The audio is
+downloaded while it plays, so it also works offline afterwards (in the car, on holiday, …).
 The interface works with icons only, so children who can't read yet can use it on their own.
 
 > **Note:** TeddyPlayer is an unofficial hobby project. It is not affiliated with, endorsed by or connected to
-> Boxine GmbH / tonies®. "Toniebox" and "Tonies" are trademarks of their respective owners.
-> You need your own TeddyCloud server with your own content.
+> any maker of audio boxes or audio figures. You need your own TeddyCloud server with your own content.
 
 ## Features
 
-- **Tonie grid** – every Tonie with audio on the server, duplicates merged, system sounds and streams hidden.
-  Recently played Tonies come first.
-- **Plays like a Toniebox** – streams immediately and downloads the full file in parallel into a shared cache.
-  Once downloaded, a Tonie plays without network. Interrupted downloads resume automatically.
-- **Offline mode** – without a connection to the server, Tonies that aren't downloaded are greyed out and
+- **Story grid** – every story with audio on the server, duplicates merged, system sounds and streams hidden.
+  Recently played stories come first.
+- **Played once, kept offline** – streams immediately and downloads the full file in parallel into a shared cache.
+  Once downloaded, a story plays without network. Interrupted downloads resume automatically.
+- **Offline mode** – without a connection to the server, stories that aren't downloaded are greyed out and
   shake when tapped.
 - **Simple player** – huge play/pause and chapter buttons, chapters shown as dots (tap to jump).
   Playback resumes where it stopped. Works in the background and from the lock screen / notification.
@@ -69,16 +68,16 @@ A local `./gradlew :app:assembleRelease` without the `TEDDYPLAYER_*` environment
   [`MviViewModel`](app/src/main/java/xyz/weilandt/teddyapp/core/mvi/MviViewModel.kt) and a pure reducer
 - **Koin** for dependency injection
 - **Ktor** + kotlinx.serialization for the TeddyCloud API
-- **Room** (tonie cache, playback positions) and **DataStore** (settings)
+- **Room** (story cache, playback positions) and **DataStore** (settings)
 - **Media3**: ExoPlayer in a `MediaSessionService`; a `DownloadManager` and the player share one `SimpleCache`
-  keyed by the tonie ID, which is what makes "stream now, keep it offline" work
+  keyed by the story ID, which is what makes "stream now, keep it offline" work
 - **Coil 3** for covers, cached on disk for offline use
 - Every UI component has Compose previews for each of its states (phone and tablet)
 
 ```
 app/src/main/java/xyz/weilandt/teddyapp/
 ├── core/mvi        MVI base class
-├── domain          models (Tonie, chapters, …) and repository interfaces
+├── domain          models (story, chapters, …) and repository interfaces
 ├── data            TeddyCloud API, mapping/filtering, Room, DataStore, network monitor
 ├── playback        Media3 service, controller, downloads, shared cache
 ├── di              Koin modules
@@ -95,7 +94,7 @@ Unit tests cover the reducers and ViewModels, the tag index mapping and filterin
 repository (with a Ktor `MockEngine`).
 
 `app/src/test/resources/tag_index.json` is a real `getTagIndex` response from a TeddyCloud server with
-anonymized tag IDs/UIDs. Titles, chapters and cover URLs are public Tonie metadata.
+anonymized tag IDs/UIDs. Titles, chapters and cover URLs are publicly available metadata.
 
 ## Development notes
 
@@ -105,14 +104,13 @@ anonymized tag IDs/UIDs. Titles, chapters and cover URLs are public Tonie metada
 (`adb reverse tcp:8089 tcp:8089` plus a small local TCP proxy to your server) and enter `127.0.0.1:8089` as
 server address. A real device in your Wi-Fi doesn't need this.
 
-**NFC:** starting Tonies by holding a figure against the phone was tried and removed again – phones don't
+**NFC:** starting stories by holding a figure against the phone was tried and removed again – phones don't
 detect the figures at all (a bank card was detected on the same phone, the figure never).
 
 ## Credits
 
 - [TeddyCloud](https://github.com/toniebox-reverse-engineering/teddycloud) and the
-  [toniebox-reverse-engineering](https://github.com/toniebox-reverse-engineering) community – without them
-  this app wouldn't exist
+  [TeddyCloud community](https://github.com/toniebox-reverse-engineering) – without them this app wouldn't exist
 - [Media3](https://developer.android.com/media/media3), [Koin](https://insert-koin.io),
   [Ktor](https://ktor.io), [Coil](https://coil-kt.github.io/coil/)
 
