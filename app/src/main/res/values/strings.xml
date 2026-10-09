@@ -15,14 +15,14 @@
     <string name="retry">Nochmal versuchen</string>
     <string name="connection_invalid_url">Bitte eine Adresse eingeben</string>
     <plurals name="connection_success">
-        <item quantity="one">Verbunden – %d Tonie gefunden</item>
-        <item quantity="other">Verbunden – %d Tonies gefunden</item>
+        <item quantity="one">Verbunden – %d Hörspiel gefunden</item>
+        <item quantity="other">Verbunden – %d Hörspiele gefunden</item>
     </plurals>
 
     <!-- Server setup -->
     <string name="setup_title">TeddyCloud verbinden</string>
     <string name="setup_message">Unter welcher Adresse ist dein TeddyCloud-Server im Heimnetz erreichbar?</string>
-    <string name="setup_show_titles_hint">Namen unter den Tonies – für Kinder, die schon lesen können. Später im Elternbereich änderbar.</string>
+    <string name="setup_show_titles_hint">Namen unter den Hörspielen – für Kinder, die schon lesen können. Später im Elternbereich änderbar.</string>
     <string name="setup_connect">Verbinden</string>
     <string name="setup_save_anyway">Trotzdem speichern</string>
     <string name="setup_connection_failed">Server nicht erreichbar. Adresse prüfen oder trotzdem speichern.</string>
@@ -45,21 +45,21 @@
     <string name="settings_check_and_save">Prüfen &amp; speichern</string>
     <string name="settings_check_connection">Verbindung prüfen</string>
     <string name="settings_reload_list">Liste laden</string>
-    <string name="settings_show_titles_hint">Zeigt die Namen unter den Tonies und im Player – für Kinder, die schon lesen können.</string>
-    <plurals name="settings_tonies_in_app">
-        <item quantity="one">%d Tonie in der App</item>
-        <item quantity="other">%d Tonies in der App</item>
+    <string name="settings_show_titles_hint">Zeigt die Namen unter den Hörspielen und im Player – für Kinder, die schon lesen können.</string>
+    <plurals name="settings_stories_in_app">
+        <item quantity="one">%d Hörspiel in der App</item>
+        <item quantity="other">%d Hörspiele in der App</item>
     </plurals>
     <string name="settings_connecting">Verbinde …</string>
     <string name="settings_connection_failed">Server nicht erreichbar</string>
     <string name="settings_saved_offline">Offline gespeichert</string>
     <plurals name="settings_downloads_summary">
-        <item quantity="one">%1$d Tonie · %2$s</item>
-        <item quantity="other">%1$d Tonies · %2$s</item>
+        <item quantity="one">%1$d Hörspiel · %2$s</item>
+        <item quantity="other">%1$d Hörspiele · %2$s</item>
     </plurals>
     <string name="settings_delete_all">Alle löschen</string>
     <string name="settings_delete_download">Download löschen</string>
-    <string name="settings_no_downloads">Noch nichts heruntergeladen. Tonies werden beim ersten Abspielen automatisch gespeichert.</string>
+    <string name="settings_no_downloads">Noch nichts heruntergeladen. Hörspiele werden beim ersten Abspielen automatisch gespeichert.</string>
     <string name="settings_delete_all_title">Alle Downloads löschen?</string>
-    <string name="settings_delete_all_message">Die Tonies sind danach nur noch im Heim-WLAN abspielbar und werden beim nächsten Abspielen neu geladen.</string>
+    <string name="settings_delete_all_message">Die Hörspiele sind danach nur noch im Heim-WLAN abspielbar und werden beim nächsten Abspielen neu geladen.</string>
 </resources>

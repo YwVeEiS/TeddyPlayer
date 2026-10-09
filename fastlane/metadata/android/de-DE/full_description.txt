@@ -27,4 +27,4 @@ Du brauchst einen eigenen, laufenden TeddyCloud-Server (Open Source) mit deinen 
 
 TeddyPlayer ist Open Source (MIT-Lizenz). Den Quellcode findest du auf GitHub.
 
-Hinweis: TeddyPlayer ist ein inoffizielles Hobbyprojekt und steht in keiner Verbindung zur Boxine GmbH. „Toniebox“ und „tonies“ sind Marken ihrer jeweiligen Inhaber.
+Hinweis: TeddyPlayer ist ein inoffizielles Hobbyprojekt und steht in keiner Verbindung zu Herstellern von Audioboxen oder Hörfiguren. Alle Inhalte stammen von deinem eigenen Server.

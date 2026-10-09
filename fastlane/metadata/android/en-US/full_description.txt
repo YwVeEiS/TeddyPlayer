@@ -27,6 +27,4 @@ You need your own running TeddyCloud server (open source) with your own content.
 
 TeddyPlayer is open source (MIT license). The source code is available on GitHub.
 
-The app interface is currently in German.
-
-Note: TeddyPlayer is an unofficial hobby project and is not affiliated with Boxine GmbH. "Toniebox" and "tonies" are trademarks of their respective owners.
+Note: TeddyPlayer is an unofficial hobby project and is not affiliated with any maker of audio boxes or audio figures. All content comes from your own server.

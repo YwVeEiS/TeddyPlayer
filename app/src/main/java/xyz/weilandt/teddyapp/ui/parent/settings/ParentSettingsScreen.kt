@@ -219,7 +219,7 @@ private fun DisplaySection(showTitles: Boolean, onShowTitlesChange: (Boolean) ->
 @Composable
 private fun ConnectionStatus(connection: ConnectionTest, tonieCount: Int) {
     val (text, color) = when (connection) {
-        ConnectionTest.Idle -> pluralStringResource(R.plurals.settings_tonies_in_app, tonieCount, tonieCount) to TeddyColors.Muted
+        ConnectionTest.Idle -> pluralStringResource(R.plurals.settings_stories_in_app, tonieCount, tonieCount) to TeddyColors.Muted
         ConnectionTest.Testing -> stringResource(R.string.settings_connecting) to TeddyColors.Muted
         is ConnectionTest.Success -> pluralStringResource(R.plurals.connection_success, connection.tonieCount, connection.tonieCount) to TeddyColors.Success
         ConnectionTest.Failed -> stringResource(R.string.settings_connection_failed) to TeddyColors.Primary
