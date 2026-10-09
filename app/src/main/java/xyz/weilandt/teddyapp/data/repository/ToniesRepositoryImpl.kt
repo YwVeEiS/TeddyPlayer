@@ -49,8 +49,6 @@ class ToniesRepositoryImpl(
 
     override suspend fun getTonie(id: String): Tonie? = dao.get(id)?.toDomain()
 
-    override suspend fun findByTagId(tagId: String): Tonie? = dao.findByTagId(tagId.lowercase())?.toDomain()
-
     private suspend fun fetch(baseUrl: String): Result<List<Tonie>> =
         try {
             Result.success(TonieMapper.map(api.getTagIndex(baseUrl), baseUrl))

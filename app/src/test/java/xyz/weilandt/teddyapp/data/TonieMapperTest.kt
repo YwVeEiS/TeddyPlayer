@@ -40,9 +40,6 @@ class TonieMapperTest {
         val bobo = tonies.filter { it.title == "Bobo auf großer Reise und weitere Folgen" }
         assertEquals(1, bobo.size)
         assertEquals("8732bcd8500304e0", bobo.single().id)
-        // all four figures remain detectable via NFC
-        assertEquals(4, bobo.single().tagIds.size)
-        assertTrue("8732bcd8500304e0" in bobo.single().tagIds)
     }
 
     @Test

@@ -88,14 +88,4 @@ class ToniesRepositoryImplTest {
         assertFalse(tonie?.chapterStartsMs.isNullOrEmpty())
     }
 
-    @Test
-    fun `findByTagId finds deduplicated tonie via any of its figures`() = runTest {
-        repository.refresh()
-        val bobo = repository.getTonie("8732bcd8500304e0")!!
-        val otherFigure = bobo.tagIds.first { it != bobo.id }
-
-        assertEquals(bobo.id, repository.findByTagId(otherFigure)?.id)
-        assertEquals(bobo.id, repository.findByTagId(otherFigure.uppercase())?.id)
-        assertNull(repository.findByTagId("ffffffff500304e0"))
-    }
 }

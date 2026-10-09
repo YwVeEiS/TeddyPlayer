@@ -1,8 +1,8 @@
 package xyz.weilandt.teddyapp.data.local
 
 import androidx.room.AutoMigration
-import androidx.room.ColumnInfo
 import androidx.room.Dao
+import androidx.room.DeleteColumn
 import androidx.room.Database
 import androidx.room.Entity
 import androidx.room.Insert
@@ -12,6 +12,7 @@ import androidx.room.Query
 import androidx.room.RoomDatabase
 import androidx.room.Transaction
 import androidx.room.Upsert
+import androidx.room.migration.AutoMigrationSpec
 import kotlinx.coroutines.flow.Flow
 import xyz.weilandt.teddyapp.domain.model.Tonie
 
@@ -24,9 +25,6 @@ data class TonieEntity(
     val audioPath: String,
     /** Comma-separated chapter starts in ms. */
     val chapterStarts: String,
-    /** Comma-separated tag IDs (ruid) of all figures with this content. */
-    @ColumnInfo(defaultValue = "")
-    val tagIds: String = "",
 ) {
     fun toDomain() = Tonie(
         id = id,
@@ -35,7 +33,6 @@ data class TonieEntity(
         coverUrl = coverUrl,
         audioPath = audioPath,
         chapterStartsMs = chapterStarts.split(',').mapNotNull { it.toLongOrNull() }.ifEmpty { listOf(0L) },
-        tagIds = tagIds.split(',').filter { it.isNotBlank() },
     )
 
     companion object {
@@ -46,7 +43,6 @@ data class TonieEntity(
             coverUrl = tonie.coverUrl,
             audioPath = tonie.audioPath,
             chapterStarts = tonie.chapterStartsMs.joinToString(","),
-            tagIds = tonie.tagIds.joinToString(","),
         )
     }
 }
@@ -74,9 +70,6 @@ interface TonieDao {
     @Query("SELECT * FROM tonies WHERE id = :id")
     suspend fun get(id: String): TonieEntity?
 
-    @Query("SELECT * FROM tonies WHERE id = :tagId OR (',' || tagIds || ',') LIKE ('%,' || :tagId || ',%') LIMIT 1")
-    suspend fun findByTagId(tagId: String): TonieEntity?
-
     @Query("DELETE FROM tonies")
     suspend fun deleteAll()
 
@@ -101,11 +94,19 @@ interface PlaybackProgressDao {
 
 @Database(
     entities = [TonieEntity::class, PlaybackProgressEntity::class],
-    version = 2,
+    version = 3,
     exportSchema = true,
-    autoMigrations = [AutoMigration(from = 1, to = 2)],
+    autoMigrations = [
+        AutoMigration(from = 1, to = 2),
+        // v2 briefly stored NFC tag IDs; the column is dropped again
+        AutoMigration(from = 2, to = 3, spec = TeddyDatabase.DropTagIds::class),
+    ],
 )
 abstract class TeddyDatabase : RoomDatabase() {
+
+    @DeleteColumn(tableName = "tonies", columnName = "tagIds")
+    class DropTagIds : AutoMigrationSpec
+
     abstract fun tonieDao(): TonieDao
     abstract fun playbackProgressDao(): PlaybackProgressDao
 }

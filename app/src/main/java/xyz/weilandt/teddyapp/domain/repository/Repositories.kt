@@ -20,14 +20,6 @@ interface ToniesRepository {
     suspend fun testConnection(baseUrl: String): Result<Int>
 
     suspend fun getTonie(id: String): Tonie?
-
-    /** Finds the tonie for a figure (tag ID/ruid, lowercase). */
-    suspend fun findByTagId(tagId: String): Tonie?
-}
-
-/** Emits the IDs of Tonie figures held against the device. */
-interface TonieTagReader {
-    val tagIds: Flow<String>
 }
 
 interface PlaybackProgressRepository {

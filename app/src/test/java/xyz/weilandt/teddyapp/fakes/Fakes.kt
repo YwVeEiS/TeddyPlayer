@@ -1,7 +1,6 @@
 package xyz.weilandt.teddyapp.fakes
 
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -27,7 +26,6 @@ import xyz.weilandt.teddyapp.domain.repository.DownloadRepository
 import xyz.weilandt.teddyapp.domain.repository.NetworkMonitor
 import xyz.weilandt.teddyapp.domain.repository.PlaybackController
 import xyz.weilandt.teddyapp.domain.repository.SettingsRepository
-import xyz.weilandt.teddyapp.domain.repository.TonieTagReader
 import xyz.weilandt.teddyapp.domain.repository.ToniesRepository
 
 class MainDispatcherRule(
@@ -85,13 +83,6 @@ class FakeToniesRepository(initial: List<Tonie> = emptyList()) : ToniesRepositor
     }
 
     override suspend fun getTonie(id: String): Tonie? = tonies.value.firstOrNull { it.id == id }
-
-    override suspend fun findByTagId(tagId: String): Tonie? =
-        tonies.value.firstOrNull { it.id == tagId || tagId in it.tagIds }
-}
-
-class FakeTagReader : TonieTagReader {
-    override val tagIds = MutableSharedFlow<String>(extraBufferCapacity = 8)
 }
 
 class FakeDownloadRepository : DownloadRepository {
@@ -149,8 +140,6 @@ class FakeTonieDao : TonieDao {
     val entities = MutableStateFlow<List<TonieEntity>>(emptyList())
     override fun observeAll(): Flow<List<TonieEntity>> = entities
     override suspend fun get(id: String): TonieEntity? = entities.value.firstOrNull { it.id == id }
-    override suspend fun findByTagId(tagId: String): TonieEntity? =
-        entities.value.firstOrNull { it.id == tagId || tagId in it.tagIds.split(',') }
     override suspend fun deleteAll() { entities.value = emptyList() }
     override suspend fun insertAll(tonies: List<TonieEntity>) { entities.value = entities.value + tonies }
     override suspend fun replaceAll(tonies: List<TonieEntity>) { entities.value = tonies }
