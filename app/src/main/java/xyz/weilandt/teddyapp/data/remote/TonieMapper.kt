@@ -22,8 +22,10 @@ object TonieMapper {
             .groupBy(::audioKey)
             .values
             // stabil: immer derselbe Tag einer Gruppe, unabhängig von der Server-Reihenfolge
-            .map { group -> group.minBy { it.ruid } }
-            .map { toTonie(it, baseUrl) }
+            .map { group ->
+                toTonie(group.minBy { it.ruid }, baseUrl)
+                    .copy(tagIds = group.map { it.ruid.lowercase() }.distinct().sorted())
+            }
 
     internal fun isPlayable(tag: TagDto): Boolean {
         if (!tag.exists || tag.hide) return false

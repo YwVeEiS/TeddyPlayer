@@ -1,5 +1,7 @@
 package xyz.weilandt.teddyapp.data.local
 
+import androidx.room.AutoMigration
+import androidx.room.ColumnInfo
 import androidx.room.Dao
 import androidx.room.Database
 import androidx.room.Entity
@@ -22,6 +24,9 @@ data class TonieEntity(
     val audioPath: String,
     /** Kommagetrennte Kapitelstarts in ms. */
     val chapterStarts: String,
+    /** Kommagetrennte Tag-IDs (ruid) aller Figuren mit diesem Inhalt. */
+    @ColumnInfo(defaultValue = "")
+    val tagIds: String = "",
 ) {
     fun toDomain() = Tonie(
         id = id,
@@ -30,6 +35,7 @@ data class TonieEntity(
         coverUrl = coverUrl,
         audioPath = audioPath,
         chapterStartsMs = chapterStarts.split(',').mapNotNull { it.toLongOrNull() }.ifEmpty { listOf(0L) },
+        tagIds = tagIds.split(',').filter { it.isNotBlank() },
     )
 
     companion object {
@@ -40,6 +46,7 @@ data class TonieEntity(
             coverUrl = tonie.coverUrl,
             audioPath = tonie.audioPath,
             chapterStarts = tonie.chapterStartsMs.joinToString(","),
+            tagIds = tonie.tagIds.joinToString(","),
         )
     }
 }
@@ -67,6 +74,9 @@ interface TonieDao {
     @Query("SELECT * FROM tonies WHERE id = :id")
     suspend fun get(id: String): TonieEntity?
 
+    @Query("SELECT * FROM tonies WHERE id = :tagId OR (',' || tagIds || ',') LIKE ('%,' || :tagId || ',%') LIMIT 1")
+    suspend fun findByTagId(tagId: String): TonieEntity?
+
     @Query("DELETE FROM tonies")
     suspend fun deleteAll()
 
@@ -91,8 +101,9 @@ interface PlaybackProgressDao {
 
 @Database(
     entities = [TonieEntity::class, PlaybackProgressEntity::class],
-    version = 1,
+    version = 2,
     exportSchema = true,
+    autoMigrations = [AutoMigration(from = 1, to = 2)],
 )
 abstract class TeddyDatabase : RoomDatabase() {
     abstract fun tonieDao(): TonieDao

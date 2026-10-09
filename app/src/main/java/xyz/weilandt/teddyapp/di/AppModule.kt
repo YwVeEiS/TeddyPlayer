@@ -19,9 +19,11 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.core.qualifier.named
+import org.koin.dsl.bind
 import org.koin.dsl.module
 import xyz.weilandt.teddyapp.data.local.TeddyDatabase
 import xyz.weilandt.teddyapp.data.network.AndroidNetworkMonitor
+import xyz.weilandt.teddyapp.data.nfc.AndroidNfcTagReader
 import xyz.weilandt.teddyapp.data.remote.TeddyCloudApi
 import xyz.weilandt.teddyapp.data.repository.CoilCoverPrefetcher
 import xyz.weilandt.teddyapp.data.repository.CoverPrefetcher
@@ -33,11 +35,13 @@ import xyz.weilandt.teddyapp.domain.repository.NetworkMonitor
 import xyz.weilandt.teddyapp.domain.repository.PlaybackController
 import xyz.weilandt.teddyapp.domain.repository.PlaybackProgressRepository
 import xyz.weilandt.teddyapp.domain.repository.SettingsRepository
+import xyz.weilandt.teddyapp.domain.repository.TonieTagReader
 import xyz.weilandt.teddyapp.domain.repository.ToniesRepository
 import xyz.weilandt.teddyapp.playback.Media3DownloadRepository
 import xyz.weilandt.teddyapp.playback.MediaCacheFactory
 import xyz.weilandt.teddyapp.playback.MediaPlaybackController
 import xyz.weilandt.teddyapp.ui.library.LibraryViewModel
+import xyz.weilandt.teddyapp.ui.nfc.NfcPlaybackViewModel
 import xyz.weilandt.teddyapp.ui.parent.gate.ParentGateViewModel
 import xyz.weilandt.teddyapp.ui.parent.settings.ParentSettingsViewModel
 import xyz.weilandt.teddyapp.ui.player.PlayerViewModel
@@ -76,6 +80,7 @@ val dataModule = module {
     single<ToniesRepository> { ToniesRepositoryImpl(get(), get(), get(), get()) }
     single<PlaybackProgressRepository> { PlaybackProgressRepositoryImpl(get()) }
     single<NetworkMonitor> { AndroidNetworkMonitor(androidContext()) }
+    single { AndroidNfcTagReader(androidContext()) } bind TonieTagReader::class
 }
 
 val playbackModule = module {
@@ -98,6 +103,7 @@ val uiModule = module {
     viewModel { ParentGateViewModel() }
     viewModelOf(::ParentSettingsViewModel)
     viewModelOf(::ServerSetupViewModel)
+    viewModel { NfcPlaybackViewModel(get(), get(), get(), get(), get()) }
 }
 
 val appModules = listOf(dataModule, playbackModule, uiModule)

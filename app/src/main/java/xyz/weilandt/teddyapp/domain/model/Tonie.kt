@@ -8,6 +8,7 @@ package xyz.weilandt.teddyapp.domain.model
  * @param audioPath Pfad relativ zur Server-URL (z. B. `/content/download/…`)
  * @param coverUrl absolute URL oder `null`, wenn es kein Cover gibt
  * @param chapterStartsMs Startzeitpunkte der Kapitel, beginnend mit 0
+ * @param tagIds alle Tag-IDs (ruid) mit diesem Inhalt – für das Erkennen per NFC
  */
 data class Tonie(
     val id: String,
@@ -16,6 +17,7 @@ data class Tonie(
     val coverUrl: String?,
     val audioPath: String,
     val chapterStartsMs: List<Long>,
+    val tagIds: List<String> = emptyList(),
 ) {
     /** Kurzer Titel für die Anzeige unter dem Cover. */
     val shortTitle: String
