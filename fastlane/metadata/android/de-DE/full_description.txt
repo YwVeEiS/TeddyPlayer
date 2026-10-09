@@ -1,0 +1,30 @@
+TeddyPlayer spielt die Hörspiele und Lieder von deinem eigenen TeddyCloud-Server ab – so einfach, dass Kinder die App ganz allein bedienen können.
+
+<b>Große Bilder statt Text</b>
+Alle Inhalte deines Servers erscheinen als große Cover-Kacheln. Antippen, und es geht los. Die Bedienung kommt ohne Lesen aus, damit auch die Kleinsten zurechtkommen. Titel lassen sich für Kinder, die schon lesen können, zuschalten.
+
+<b>Einmal gehört, immer dabei</b>
+Ein Hörspiel startet sofort und wird beim Abspielen im Hintergrund vollständig heruntergeladen. Danach läuft es auch ohne Netz – im Auto, im Urlaub oder im Flugzeug. Unterbrochene Downloads laufen automatisch weiter. Ohne Verbindung zum Server sind nicht geladene Inhalte ausgegraut.
+
+<b>Ein Player für kleine Hände</b>
+• Riesige Knöpfe für Play/Pause, vor und zurück
+• Kapitel als Punkte – einfach antippen
+• Geht beim nächsten Mal an der letzten Stelle weiter
+• Läuft im Hintergrund, mit Steuerung auf dem Sperrbildschirm
+• Zuletzt gehörte Inhalte stehen vorne
+
+<b>Elternbereich</b>
+Das Zahnrad 3 Sekunden gedrückt halten und eine kleine Rechenaufgabe lösen. Dort stellst du die Server-Adresse ein, schaltest Titel an oder aus und verwaltest die Downloads (Speicherverbrauch, einzelne oder alle löschen).
+
+<b>Für Handy und Tablet</b>
+Auf Tablets passt sich das Raster der Bildschirmgröße an, im Querformat zeigt der Player Cover und Knöpfe nebeneinander.
+
+<b>Keine Werbung, kein Tracking</b>
+Kein Konto, keine Werbung, keine Analyse. Die App spricht ausschließlich mit deinem eigenen Server im Heimnetz.
+
+<b>Voraussetzung</b>
+Du brauchst einen eigenen, laufenden TeddyCloud-Server (Open Source) mit deinen eigenen Inhalten. Ohne diesen Server spielt die App nichts ab. Die App liefert selbst keine Inhalte.
+
+TeddyPlayer ist Open Source (MIT-Lizenz). Den Quellcode findest du auf GitHub.
+
+Hinweis: TeddyPlayer ist ein inoffizielles Hobbyprojekt und steht in keiner Verbindung zur Boxine GmbH. „Toniebox“ und „tonies“ sind Marken ihrer jeweiligen Inhaber.

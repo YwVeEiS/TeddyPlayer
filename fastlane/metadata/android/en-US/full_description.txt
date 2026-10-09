@@ -1,0 +1,32 @@
+TeddyPlayer plays the stories and songs from your own TeddyCloud server – so simple that children can use it all by themselves.
+
+<b>Big pictures instead of text</b>
+Everything on your server shows up as big cover tiles. Tap one and it plays. No reading needed, so even the youngest can find their way around. Titles can be switched on for children who can read.
+
+<b>Played once, always with you</b>
+A story starts right away and is fully downloaded in the background while it plays. After that it works without network – in the car, on holiday or on a plane. Interrupted downloads resume automatically. Without a connection to the server, content that isn't downloaded is greyed out.
+
+<b>A player for little hands</b>
+• Huge buttons for play/pause, next and previous
+• Chapters shown as dots – just tap to jump
+• Resumes where it stopped last time
+• Keeps playing in the background, with lock screen controls
+• Recently played content comes first
+
+<b>Parent area</b>
+Hold the gear icon for 3 seconds and solve a small math task. There you set the server address, switch titles on or off and manage downloads (storage usage, delete single or all).
+
+<b>For phones and tablets</b>
+On tablets the grid adapts to the screen size, and in landscape the player shows the cover and buttons side by side.
+
+<b>No ads, no tracking</b>
+No account, no ads, no analytics. The app only talks to your own server on your home network.
+
+<b>Requirement</b>
+You need your own running TeddyCloud server (open source) with your own content. Without such a server the app has nothing to play. The app does not provide any content itself.
+
+TeddyPlayer is open source (MIT license). The source code is available on GitHub.
+
+The app interface is currently in German.
+
+Note: TeddyPlayer is an unofficial hobby project and is not affiliated with Boxine GmbH. "Toniebox" and "tonies" are trademarks of their respective owners.
