@@ -38,8 +38,8 @@ class MainDispatcherRule(
 }
 
 /**
- * Führt einen Test mit einem ViewModel aus und beendet danach dessen viewModelScope –
- * sonst würden Endlosschleifen (z. B. Retry) das Ende von runTest blockieren.
+ * Runs a test with a ViewModel and cancels its viewModelScope afterwards –
+ * otherwise endless loops (e.g. retry) would block the end of runTest.
  */
 inline fun <reified VM : ViewModel> runViewModelTest(
     crossinline create: () -> VM,

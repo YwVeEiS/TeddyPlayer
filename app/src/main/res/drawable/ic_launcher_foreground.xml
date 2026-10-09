@@ -3,21 +3,21 @@
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
-    <!-- Ohren -->
+    <!-- Ears -->
     <path android:fillColor="#FF8B5A3C" android:pathData="M38,40m-9,0a9,9 0,1 1,18 0a9,9 0,1 1,-18 0" />
     <path android:fillColor="#FF8B5A3C" android:pathData="M70,40m-9,0a9,9 0,1 1,18 0a9,9 0,1 1,-18 0" />
     <path android:fillColor="#FFD9A47C" android:pathData="M38,40m-4.5,0a4.5,4.5 0,1 1,9 0a4.5,4.5 0,1 1,-9 0" />
     <path android:fillColor="#FFD9A47C" android:pathData="M70,40m-4.5,0a4.5,4.5 0,1 1,9 0a4.5,4.5 0,1 1,-9 0" />
-    <!-- Kopf -->
+    <!-- Head -->
     <path android:fillColor="#FFA86E47" android:pathData="M54,58m-22,0a22,22 0,1 1,44 0a22,22 0,1 1,-44 0" />
-    <!-- Schnauze -->
+    <!-- Snout -->
     <path android:fillColor="#FFE8C3A0" android:pathData="M54,66m-10,0a10,8 0,1 1,20 0a10,8 0,1 1,-20 0" />
-    <!-- Augen -->
+    <!-- Eyes -->
     <path android:fillColor="#FF3A2E2A" android:pathData="M46,54m-3,0a3,3 0,1 1,6 0a3,3 0,1 1,-6 0" />
     <path android:fillColor="#FF3A2E2A" android:pathData="M62,54m-3,0a3,3 0,1 1,6 0a3,3 0,1 1,-6 0" />
-    <!-- Nase -->
+    <!-- Nose -->
     <path android:fillColor="#FF3A2E2A" android:pathData="M54,63m-4,0a4,3 0,1 1,8 0a4,3 0,1 1,-8 0" />
-    <!-- Mund -->
+    <!-- Mouth -->
     <path android:strokeColor="#FF3A2E2A" android:strokeWidth="1.6" android:strokeLineCap="round"
         android:pathData="M50,69 Q54,72 58,69" />
 </vector>

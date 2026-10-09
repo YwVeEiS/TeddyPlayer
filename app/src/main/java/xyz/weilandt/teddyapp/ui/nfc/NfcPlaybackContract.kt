@@ -1,11 +1,11 @@
 package xyz.weilandt.teddyapp.ui.nfc
 
-/** Kurze Rückmeldung, wenn eine Figur nicht abgespielt werden kann. */
+/** Short feedback when a figure can't be played. */
 enum class NfcFeedback {
-    /** Figur ist TeddyCloud nicht bekannt. */
+    /** The figure is unknown to TeddyCloud. */
     Unknown,
 
-    /** Bekannt, aber offline und nicht heruntergeladen. */
+    /** Known, but offline and not downloaded. */
     Unavailable,
 }
 
@@ -14,7 +14,7 @@ data class NfcPlaybackState(
 )
 
 sealed interface NfcPlaybackIntent {
-    /** Eine Figur wurde ans Gerät gehalten (UID als Hex). */
+    /** A figure was held against the device (UID as hex). */
     data class TagDetected(val uidHex: String) : NfcPlaybackIntent
 }
 

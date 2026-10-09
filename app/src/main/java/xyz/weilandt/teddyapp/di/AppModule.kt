@@ -58,7 +58,7 @@ val dataModule = module {
         HttpClient(OkHttp) {
             expectSuccess = true
             install(ContentNegotiation) {
-                // TeddyCloud liefert JSON als "text/json" – daher für alle Typen registrieren
+                // TeddyCloud serves JSON as "text/json" – so register the converter for all types
                 json(Json { ignoreUnknownKeys = true; coerceInputValues = true }, contentType = ContentType.Any)
             }
             install(HttpTimeout) {

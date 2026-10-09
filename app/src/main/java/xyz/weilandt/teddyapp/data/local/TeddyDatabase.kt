@@ -22,9 +22,9 @@ data class TonieEntity(
     val series: String,
     val coverUrl: String?,
     val audioPath: String,
-    /** Kommagetrennte Kapitelstarts in ms. */
+    /** Comma-separated chapter starts in ms. */
     val chapterStarts: String,
-    /** Kommagetrennte Tag-IDs (ruid) aller Figuren mit diesem Inhalt. */
+    /** Comma-separated tag IDs (ruid) of all figures with this content. */
     @ColumnInfo(defaultValue = "")
     val tagIds: String = "",
 ) {

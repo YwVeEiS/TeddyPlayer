@@ -48,8 +48,8 @@ class LibraryViewModel(
             .onEach { dispatch(LibraryResult.ShowTitlesChanged(it)) }
             .launchIn(viewModelScope)
 
-        // Sobald Netz da und der Server eingerichtet ist: laden.
-        // Ist der Server nicht erreichbar, regelmäßig erneut versuchen.
+        // Load as soon as there is a network and the server is set up.
+        // If the server is unreachable, retry periodically.
         viewModelScope.launch {
             combine(network.isNetworkAvailable, settings.isServerConfigured) { available, configured ->
                 available && configured

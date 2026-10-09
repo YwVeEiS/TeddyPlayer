@@ -1,6 +1,6 @@
 package xyz.weilandt.teddyapp.domain.model
 
-/** Momentaufnahme der Wiedergabe, wie sie die UI braucht. */
+/** Snapshot of playback as needed by the UI. */
 data class PlaybackSnapshot(
     val tonieId: String? = null,
     val isPlaying: Boolean = false,

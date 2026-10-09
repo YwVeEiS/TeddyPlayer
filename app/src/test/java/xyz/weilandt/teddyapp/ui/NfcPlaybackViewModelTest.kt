@@ -26,7 +26,7 @@ class NfcPlaybackViewModelTest {
     @get:Rule
     val mainRule = MainDispatcherRule()
 
-    // Bobo liegt auf zwei Figuren; die zweite ist eine Dublette
+    // Bobo is on two figures; the second one is a duplicate
     private val bobo = tonie("4accd89d500304e0").copy(tagIds = listOf("4accd89d500304e0", "aabbccdd500304e0"))
     private val tonies = FakeToniesRepository(listOf(bobo)).apply { isServerReachable.value = true }
     private val downloads = FakeDownloadRepository()

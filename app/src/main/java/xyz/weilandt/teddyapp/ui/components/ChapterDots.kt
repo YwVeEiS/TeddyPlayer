@@ -27,8 +27,8 @@ import xyz.weilandt.teddyapp.ui.theme.TeddyColors
 import xyz.weilandt.teddyapp.ui.theme.TeddyTheme
 
 /**
- * Fortschritt als Perlenkette: jedes Kapitel ein Punkt. Gehörte Kapitel sind voll,
- * das aktuelle ist größer und füllt sich von links nach rechts.
+ * Progress as a string of beads: one dot per chapter. Played chapters are filled,
+ * the current one is larger and fills from left to right.
  */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable

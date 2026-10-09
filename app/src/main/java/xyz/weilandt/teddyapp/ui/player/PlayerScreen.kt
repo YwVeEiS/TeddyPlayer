@@ -82,7 +82,7 @@ fun PlayerScreen(
             .padding(16.dp),
     ) {
         val isLandscape = maxWidth > maxHeight
-        // Tablets bekommen größere Knöpfe
+        // Tablets get larger buttons
         val sizes = if (minOf(maxWidth, maxHeight) >= 600.dp) ControlSizes.Large else ControlSizes.Regular
         val tonie = state.tonie
 
@@ -154,7 +154,7 @@ private fun PlayerCover(state: PlayerState, tonie: Tonie, modifier: Modifier) {
     }
 }
 
-/** Titel (optional) und Kapitel-Punkte. */
+/** Title (optional) and chapter dots. */
 @Composable
 private fun PlayerInfo(state: PlayerState, tonie: Tonie, sizes: ControlSizes, onIntent: (PlayerIntent) -> Unit) {
     if (state.showTitles) {

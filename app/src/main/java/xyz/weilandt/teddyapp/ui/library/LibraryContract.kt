@@ -44,13 +44,13 @@ data class LibraryState(
             val progress = if (playback.durationMs > 0) {
                 (playback.positionMs.toFloat() / playback.durationMs).coerceIn(0f, 1f)
             } else {
-                // Dauer noch unbekannt: über die Kapitel schätzen
+                // Duration still unknown: estimate via chapters
                 (playback.currentChapter + playback.chapterProgress) / playback.chapterCount
             }
             return NowPlaying(tonie, playback.isPlaying, playback.isBuffering, progress)
         }
 
-    /** Offline nur abspielbar, was komplett heruntergeladen ist. */
+    /** Offline, only fully downloaded tonies are playable. */
     fun isAvailable(item: LibraryItem): Boolean = isOnline || item.download == DownloadStatus.Completed
 }
 

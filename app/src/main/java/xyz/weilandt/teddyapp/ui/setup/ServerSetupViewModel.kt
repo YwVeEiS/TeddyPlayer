@@ -9,8 +9,8 @@ import xyz.weilandt.teddyapp.domain.repository.ToniesRepository
 import xyz.weilandt.teddyapp.ui.parent.settings.ConnectionTest
 
 /**
- * Ersteinrichtung: Adresse prüfen und speichern. Der Dialog verschwindet von selbst,
- * sobald [SettingsRepository.isServerConfigured] `true` meldet – daher keine Effects.
+ * Initial setup: check and save the address. The dialog disappears by itself
+ * as soon as [SettingsRepository.isServerConfigured] reports `true` – hence no effects.
  */
 class ServerSetupViewModel(
     private val settings: SettingsRepository,
@@ -43,7 +43,7 @@ class ServerSetupViewModel(
         }
     }
 
-    /** Titel zuerst speichern – das Speichern der Adresse schließt den Dialog. */
+    /** Save titles first – saving the address closes the dialog. */
     private suspend fun save(url: String) {
         settings.setShowTitles(state.value.showTitles)
         settings.setServerUrl(url)

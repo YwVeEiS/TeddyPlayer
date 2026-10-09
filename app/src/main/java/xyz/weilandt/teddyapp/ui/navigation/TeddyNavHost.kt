@@ -35,7 +35,7 @@ fun TeddyNavHost() {
     val nfcState by nfcViewModel.state.collectAsStateWithLifecycle()
     val haptics = LocalHapticFeedback.current
 
-    // Figur erkannt → von jedem Bildschirm aus zum Player
+    // Figure detected → go to the player from any screen
     LaunchedEffect(nfcViewModel) {
         nfcViewModel.effects.collect { effect ->
             when (effect) {

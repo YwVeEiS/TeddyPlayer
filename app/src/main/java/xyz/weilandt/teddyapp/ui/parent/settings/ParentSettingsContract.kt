@@ -66,7 +66,7 @@ object ParentSettingsReducer {
     fun reduce(state: ParentSettingsState, result: ParentSettingsResult): ParentSettingsState = when (result) {
         is ParentSettingsResult.SavedUrl -> state.copy(
             savedServerUrl = result.url,
-            // Eingabe nur übernehmen, solange der Nutzer noch nichts Eigenes getippt hat
+            // Only take over the input while the user hasn't typed anything of their own
             serverUrlInput = if (state.serverUrlInput.isEmpty() || !state.isUrlChanged) result.url else state.serverUrlInput,
         )
         is ParentSettingsResult.UrlInput -> state.copy(serverUrlInput = result.url, connection = ConnectionTest.Idle)

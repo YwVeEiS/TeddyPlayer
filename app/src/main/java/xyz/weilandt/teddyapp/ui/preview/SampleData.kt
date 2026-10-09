@@ -2,7 +2,7 @@ package xyz.weilandt.teddyapp.ui.preview
 
 import xyz.weilandt.teddyapp.domain.model.Tonie
 
-/** Beispieldaten für Previews (ohne Cover-URL, damit Platzhalter sichtbar sind). */
+/** Sample data for previews (without cover URL so placeholders are visible). */
 object SampleData {
     val bobo = Tonie(
         id = "bobo",
@@ -21,5 +21,5 @@ object SampleData {
     val tonies = listOf(bobo, conni, pikachu, frozen, sandman, custom)
 }
 
-/** Preview-Gerät: Tablet im Hochformat (Devices.PIXEL_TABLET ist quer). */
+/** Preview device: tablet in portrait (Devices.PIXEL_TABLET is landscape). */
 const val TABLET_PORTRAIT = "spec:width=800dp,height=1280dp,dpi=320"

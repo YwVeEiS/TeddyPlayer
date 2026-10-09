@@ -42,8 +42,8 @@ import xyz.weilandt.teddyapp.ui.theme.TeddyColors
 import xyz.weilandt.teddyapp.ui.theme.TeddyTheme
 
 /**
- * Leiste am unteren Rand: Cover (öffnet den Player), dicker Fortschrittsbalken,
- * optional der Titel, und ein großer Play/Pause-Knopf.
+ * Bar at the bottom edge: cover (opens the player), thick progress bar,
+ * optionally the title, and a large play/pause button.
  */
 @Composable
 fun MiniPlayer(
@@ -63,7 +63,7 @@ fun MiniPlayer(
         color = TeddyColors.Surface,
     ) {
         Row(
-            // Auf Tablets nicht über die ganze Breite ziehen, sondern zentrieren
+            // On tablets, don't stretch across the full width – center instead
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentWidth(Alignment.CenterHorizontally)
@@ -118,7 +118,7 @@ fun MiniPlayer(
     }
 }
 
-/** Dicker, runder Balken – gut sichtbar für Kinder. */
+/** Thick rounded bar – easy for children to see. */
 @Composable
 private fun ProgressBar(progress: Float) {
     val animated by animateFloatAsState(progress.coerceIn(0f, 1f), label = "miniProgress")

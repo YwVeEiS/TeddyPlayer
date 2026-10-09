@@ -6,10 +6,10 @@ import xyz.weilandt.teddyapp.domain.model.ServerUrl
 import xyz.weilandt.teddyapp.domain.model.Tonie
 
 /**
- * Wandelt den Tag-Index in die Tonie-Liste für Kinder um:
- * - nur Tags, deren Audio auf dem Server liegt
- * - keine Streams, keine System-Sounds, keine ausgeblendeten Tags
- * - Tags mit derselben Audiodatei werden zusammengefasst
+ * Turns the tag index into the tonie list shown to children:
+ * - only tags whose audio is stored on the server
+ * - no streams, no system sounds, no hidden tags
+ * - tags sharing the same audio file are merged
  */
 object TonieMapper {
 
@@ -21,7 +21,7 @@ object TonieMapper {
             .filter(::isPlayable)
             .groupBy(::audioKey)
             .values
-            // stabil: immer derselbe Tag einer Gruppe, unabhängig von der Server-Reihenfolge
+            // stable: always the same tag of a group, regardless of server order
             .map { group ->
                 toTonie(group.minBy { it.ruid }, baseUrl)
                     .copy(tagIds = group.map { it.ruid.lowercase() }.distinct().sorted())
@@ -32,7 +32,7 @@ object TonieMapper {
         if (tag.audioUrl.isBlank()) return false
         if (tag.ruid == SYSTEM_RUID) return false
         if (tag.tonieInfo?.series?.startsWith("System sounds", ignoreCase = true) == true) return false
-        // Leere Source = Original-Inhalt auf dem Server, lib:// = Bibliothek, alles andere sind Streams
+        // Empty source = original content on the server, lib:// = library, everything else is a stream
         return tag.source.isEmpty() || tag.source.startsWith("lib://")
     }
 
@@ -54,7 +54,7 @@ object TonieMapper {
         )
     }
 
-    /** Sekunden → ms; das erste Kapitel beginnt immer bei 0 (manche Dateien starten bei 1 s). */
+    /** Seconds → ms; the first chapter always starts at 0 (some files start at 1 s). */
     private fun chapterStarts(trackSeconds: List<Long>): List<Long> {
         val starts = trackSeconds.distinct().sorted().map { it * 1000L }
         return listOf(0L) + starts.drop(1).filter { it > 0L }
@@ -69,7 +69,7 @@ object TonieMapper {
     internal fun titleFromSource(source: String): String {
         if (source.isEmpty()) return ""
         val name = source.substringAfterLast('/').substringBeforeLast(".taf")
-        // Reine Audio-IDs wie "1731691506" sind keine sinnvollen Namen
+        // Plain audio IDs like "1731691506" are not meaningful names
         return if (name.all { it.isDigit() }) "" else name.replace('_', ' ').trim()
     }
 }

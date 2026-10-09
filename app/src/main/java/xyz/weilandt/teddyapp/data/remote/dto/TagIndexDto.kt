@@ -2,7 +2,7 @@ package xyz.weilandt.teddyapp.data.remote.dto
 
 import kotlinx.serialization.Serializable
 
-/** Antwort von `GET /api/getTagIndex`. */
+/** Response of `GET /api/getTagIndex`. */
 @Serializable
 data class TagIndexDto(
     val tags: List<TagDto> = emptyList(),

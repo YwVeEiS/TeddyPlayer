@@ -35,7 +35,7 @@ import xyz.weilandt.teddyapp.ui.theme.TeddyColors
 import xyz.weilandt.teddyapp.ui.theme.TeddyTheme
 import kotlin.math.absoluteValue
 
-/** Cover eines Tonies; ohne Bild gibt es ein buntes, wiedererkennbares Symbol. */
+/** Cover of a tonie; without an image, a colorful recognizable symbol is shown. */
 @Composable
 fun TonieCover(
     tonieId: String,

@@ -20,7 +20,7 @@ object TeddyColors {
     val Success = Color(0xFF3FA34D)
     val Warning = Color(0xFFF2A93B)
 
-    /** Fröhliche Farben für Platzhalter-Cover. */
+    /** Cheerful colors for placeholder covers. */
     val Playful = listOf(
         Color(0xFFE5483B), Color(0xFFF2A93B), Color(0xFFF7D44C), Color(0xFF7BC86C),
         Color(0xFF2E9CCA), Color(0xFF8E6CD8), Color(0xFFE86BA8), Color(0xFF3FB8AF),
@@ -44,7 +44,7 @@ private val TeddyShapes = Shapes(
     large = RoundedCornerShape(32.dp),
 )
 
-/** Bewusst immer hell: Kinder-App mit kräftigen, gut erkennbaren Farben. */
+/** Deliberately always light: a kids' app with bold, easily recognizable colors. */
 @Composable
 fun TeddyTheme(content: @Composable () -> Unit) {
     MaterialTheme(

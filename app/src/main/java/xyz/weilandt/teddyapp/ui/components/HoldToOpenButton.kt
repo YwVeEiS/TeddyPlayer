@@ -38,8 +38,8 @@ import xyz.weilandt.teddyapp.ui.theme.TeddyTheme
 const val HOLD_DURATION_MS = 3_000
 
 /**
- * Unauffälliges Zahnrad für Eltern: löst erst nach [HOLD_DURATION_MS] Gedrückthalten aus.
- * Ein Ring zeigt den Fortschritt. Kurzes Tippen bewirkt nichts.
+ * Inconspicuous gear for parents: only triggers after being held for [HOLD_DURATION_MS].
+ * A ring shows the progress. A short tap does nothing.
  */
 @Composable
 fun HoldToOpenButton(
@@ -71,7 +71,7 @@ fun HoldToOpenButton(
                     if (released == null) {
                         haptics.performHapticFeedback(HapticFeedbackType.LongPress)
                         currentOnTriggered.value()
-                        // Finger noch auf dem Display – auf Loslassen warten
+                        // Finger still on the screen – wait for release
                         waitForUpOrCancellation()
                     }
                     scope.launch { progress.snapTo(0f) }

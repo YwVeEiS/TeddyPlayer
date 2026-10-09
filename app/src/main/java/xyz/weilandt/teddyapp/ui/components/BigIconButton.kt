@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.dp
 import xyz.weilandt.teddyapp.ui.theme.TeddyColors
 import xyz.weilandt.teddyapp.ui.theme.TeddyTheme
 
-/** Großer, runder Knopf mit Symbol und haptischem Feedback – für kleine Finger. */
+/** Large round button with an icon and haptic feedback – for small fingers. */
 @Composable
 fun BigIconButton(
     icon: ImageVector,

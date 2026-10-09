@@ -28,7 +28,7 @@ import xyz.weilandt.teddyapp.domain.model.Tonie
 import xyz.weilandt.teddyapp.domain.repository.DownloadRepository
 import xyz.weilandt.teddyapp.domain.repository.SettingsRepository
 
-/** Muss auf dem Main-Thread erzeugt werden, da der [DownloadManager] dort lebt. */
+/** Must be created on the main thread because the [DownloadManager] lives there. */
 @OptIn(UnstableApi::class)
 class Media3DownloadRepository(
     private val context: Context,
@@ -72,14 +72,14 @@ class Media3DownloadRepository(
     }
 
     /**
-     * Setzt nach einem Prozess-Neustart unterbrochene Downloads fort.
-     * Nur aus dem Vordergrund aufrufen (Android verbietet Service-Starts im Hintergrund).
+     * Resumes downloads interrupted by a process restart.
+     * Only call from the foreground (Android forbids starting services from the background).
      */
     override fun resumePending() {
         try {
             DownloadService.start(context, TeddyDownloadService::class.java)
         } catch (e: IllegalStateException) {
-            // App war doch nicht im Vordergrund – beim nächsten Abspielen geht es weiter
+            // The app wasn't in the foreground after all – it continues on the next playback
         }
     }
 
@@ -123,7 +123,7 @@ class Media3DownloadRepository(
         }
     }
 
-    /** Der DownloadManager meldet keinen Fortschritt – solange etwas lädt, fragen wir ihn ab. */
+    /** The DownloadManager doesn't report progress – poll it while something is downloading. */
     private fun ensureProgressPolling() {
         if (progressJob?.isActive == true) return
         if (downloadManager.currentDownloads.none { it.state == Download.STATE_DOWNLOADING }) return

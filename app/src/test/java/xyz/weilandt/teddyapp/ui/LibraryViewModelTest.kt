@@ -139,7 +139,7 @@ class LibraryViewModelTest {
             durationMs = 0L,
             chapterStartsMs = a.chapterStartsMs,
         )
-        // Kapitel 2 von 3, zur Hälfte gehört → (1 + 0.5) / 3
+        // chapter 2 of 3, half played → (1 + 0.5) / 3
         assertEquals(0.5f, vm.state.value.nowPlaying!!.progress, 0.001f)
     }
 

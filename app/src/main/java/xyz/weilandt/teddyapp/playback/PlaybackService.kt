@@ -64,9 +64,9 @@ class PlaybackService : MediaSessionService() {
     }
 
     /**
-     * MediaItems vom Controller verlieren ggf. ihre lokale Konfiguration.
-     * Wir bauen sie aus der Request-URI wieder auf – mit der Tonie-ID als Cache-Schlüssel,
-     * damit Player und Download dieselben Cache-Einträge nutzen.
+     * MediaItems coming from the controller may lose their local configuration.
+     * We rebuild them from the request URI – with the tonie ID as cache key,
+     * so player and download share the same cache entries.
      */
     private object SessionCallback : MediaSession.Callback {
         override fun onAddMediaItems(

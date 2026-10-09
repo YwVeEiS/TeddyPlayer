@@ -46,7 +46,7 @@ fun ServerSetupRoute(viewModel: ServerSetupViewModel = koinViewModel()) {
     ServerSetupDialog(state, viewModel::onIntent)
 }
 
-/** Erscheint beim ersten Start; lässt sich nicht wegklicken, bis eine Adresse gespeichert ist. */
+/** Shown on first launch; can't be dismissed until an address has been saved. */
 @Composable
 fun ServerSetupDialog(
     state: ServerSetupState,

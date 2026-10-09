@@ -20,7 +20,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
         super.onCreate(savedInstanceState)
-        // Handys bleiben im Hochformat, Tablets dürfen frei drehen
+        // Phones stay in portrait, tablets may rotate freely
         requestedOrientation = if (resources.configuration.smallestScreenWidthDp < 600) {
             ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         } else {
@@ -35,7 +35,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    // Figuren nur erkennen, solange die App sichtbar ist
+    // Only detect figures while the app is visible
     override fun onResume() {
         super.onResume()
         nfcReader.enable(this)

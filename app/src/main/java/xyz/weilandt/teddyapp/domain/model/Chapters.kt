@@ -1,9 +1,9 @@
 package xyz.weilandt.teddyapp.domain.model
 
-/** Reine Kapitel-Logik, genutzt vom Player-Service und der UI. */
+/** Pure chapter logic, used by the player service and the UI. */
 object Chapters {
 
-    /** Ab dieser Position springt "zurück" an den Kapitelanfang statt ins vorige Kapitel. */
+    /** Beyond this position, "previous" jumps to the chapter start instead of the previous chapter. */
     const val RESTART_THRESHOLD_MS = 3_000L
 
     fun indexAt(starts: List<Long>, positionMs: Long): Int {
@@ -12,13 +12,13 @@ object Chapters {
         return idx.coerceAtLeast(0)
     }
 
-    /** Ziel für "vor" oder `null`, wenn bereits im letzten Kapitel. */
+    /** Target for "next", or `null` when already in the last chapter. */
     fun nextStart(starts: List<Long>, positionMs: Long): Long? {
         val idx = indexAt(starts, positionMs)
         return starts.getOrNull(idx + 1)
     }
 
-    /** Ziel für "zurück": Kapitelanfang, oder vorheriges Kapitel, wenn wir gerade erst begonnen haben. */
+    /** Target for "previous": chapter start, or the previous chapter if we only just started. */
     fun previousTarget(starts: List<Long>, positionMs: Long): Long {
         if (starts.isEmpty()) return 0L
         val idx = indexAt(starts, positionMs)
@@ -30,11 +30,11 @@ object Chapters {
         }
     }
 
-    /** Fortschritt innerhalb des aktuellen Kapitels (0..1). */
+    /** Progress within the current chapter (0..1). */
     fun progressInChapter(starts: List<Long>, positionMs: Long, durationMs: Long): Float {
         val idx = indexAt(starts, positionMs)
         val start = starts.getOrElse(idx) { 0L }
-        // Die Gesamtdauer wird nur fürs letzte Kapitel gebraucht (bei Ogg anfangs oft unbekannt)
+        // The total duration is only needed for the last chapter (often unknown at first for Ogg)
         val end = starts.getOrNull(idx + 1) ?: durationMs.takeIf { it > 0L } ?: return 0f
         val length = end - start
         if (length <= 0L) return 0f

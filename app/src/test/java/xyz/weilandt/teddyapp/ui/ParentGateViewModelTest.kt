@@ -43,7 +43,7 @@ class ParentGateViewModelTest {
     @Test
     fun `wrong answer shows hint and new question`() {
         val wrong = vm.state.value.answer + 1
-        // gleiche Stellenzahl, damit sofort geprüft wird
+        // same number of digits so it is checked immediately
         type(if (wrong.toString().length == vm.state.value.answer.toString().length) wrong else vm.state.value.answer - 1)
 
         val state = vm.state.value

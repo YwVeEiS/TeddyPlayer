@@ -3,7 +3,7 @@ package xyz.weilandt.teddyapp.ui.parent.gate
 import xyz.weilandt.teddyapp.core.mvi.MviViewModel
 import kotlin.random.Random
 
-/** Einfache Rechenaufgabe (kleines Einmaleins), die Kleinkinder nicht lösen können. */
+/** Simple arithmetic task (multiplication table) that toddlers can't solve. */
 class ParentGateViewModel(
     private val random: Random = Random.Default,
 ) : MviViewModel<ParentGateState, ParentGateIntent, ParentGateResult, ParentGateEffect>(ParentGateState()) {

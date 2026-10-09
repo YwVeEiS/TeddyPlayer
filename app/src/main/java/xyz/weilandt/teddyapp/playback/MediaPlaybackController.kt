@@ -33,10 +33,10 @@ import xyz.weilandt.teddyapp.domain.repository.PlaybackProgressRepository
 import xyz.weilandt.teddyapp.domain.repository.SettingsRepository
 
 /**
- * Verbindet die App mit dem [PlaybackService] über einen [MediaController],
- * merkt sich die Position je Tonie und stößt beim Abspielen den Download an.
+ * Connects the app to the [PlaybackService] via a [MediaController],
+ * remembers the position per tonie and triggers the download when playing.
  *
- * @param scope muss auf dem Main-Thread laufen (MediaController-Vorgabe)
+ * @param scope must run on the main thread (MediaController requirement)
  */
 class MediaPlaybackController(
     private val context: Context,
@@ -68,7 +68,7 @@ class MediaPlaybackController(
 
         override fun onPlaybackStateChanged(playbackState: Int) {
             if (playbackState == Player.STATE_ENDED) {
-                // Am Ende stoppen; beim nächsten Antippen beginnt der Tonie von vorne.
+                // Stop at the end; the next tap starts the tonie from the beginning.
                 val id = _state.value.tonieId ?: return
                 scope.launch { progress.savePosition(id, 0L) }
             }
@@ -115,8 +115,8 @@ class MediaPlaybackController(
         }
     }
 
-    // Bewusst seekTo statt seekToNext: der MediaController leitet seekToNext bei einer
-    // einzelnen Datei nicht an die Session weiter.
+    // Deliberately seekTo instead of seekToNext: the MediaController doesn't forward
+    // seekToNext to the session for a single file.
     override fun nextChapter() = withController { c ->
         Chapters.nextStart(_state.value.chapterStartsMs, c.currentPosition)?.let(c::seekTo)
     }

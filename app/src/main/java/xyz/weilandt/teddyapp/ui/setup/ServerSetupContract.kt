@@ -10,7 +10,7 @@ data class ServerSetupState(
 ) {
     val isTesting: Boolean get() = connection == ConnectionTest.Testing
 
-    /** Nach einem Fehlschlag darf trotzdem gespeichert werden (z. B. Einrichtung unterwegs). */
+    /** After a failure, saving anyway is allowed (e.g. when setting up away from home). */
     val canSaveAnyway: Boolean get() = connection == ConnectionTest.Failed
 }
 

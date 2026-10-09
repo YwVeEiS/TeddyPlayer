@@ -15,7 +15,7 @@ import xyz.weilandt.teddyapp.domain.model.Tonie
 import xyz.weilandt.teddyapp.domain.repository.SettingsRepository
 import xyz.weilandt.teddyapp.domain.repository.ToniesRepository
 
-/** Wird nach erfolgreichem Laden aufgerufen, z. B. um Cover für offline vorzuladen. */
+/** Called after a successful load, e.g. to prefetch covers for offline use. */
 fun interface CoverPrefetcher {
     fun prefetch(urls: List<String>)
 }

@@ -16,7 +16,7 @@ class TonieMapperTest {
     private val json = Json { ignoreUnknownKeys = true }
     private val base = "http://teddy"
 
-    /** Echte Antwort eines TeddyCloud-Servers (93 Tags). */
+    /** Real response of a TeddyCloud server (93 tags, anonymized IDs). */
     private val fixture: TagIndexDto by lazy {
         val text = javaClass.classLoader!!.getResource("tag_index.json")!!.readText()
         json.decodeFromString(text)
@@ -36,11 +36,11 @@ class TonieMapperTest {
     @Test
     fun `duplicates keep the smallest ruid`() {
         val tonies = TonieMapper.map(fixture, base)
-        // "Bobo auf großer Reise" liegt auf vier Tags mit derselben Audiodatei
+        // "Bobo auf großer Reise" is on four tags with the same audio file
         val bobo = tonies.filter { it.title == "Bobo auf großer Reise und weitere Folgen" }
         assertEquals(1, bobo.size)
         assertEquals("8732bcd8500304e0", bobo.single().id)
-        // alle vier Figuren bleiben per NFC erkennbar
+        // all four figures remain detectable via NFC
         assertEquals(4, bobo.single().tagIds.size)
         assertTrue("8732bcd8500304e0" in bobo.single().tagIds)
     }

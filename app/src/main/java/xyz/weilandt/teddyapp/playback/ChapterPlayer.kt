@@ -7,9 +7,9 @@ import androidx.media3.common.util.UnstableApi
 import xyz.weilandt.teddyapp.domain.model.Chapters
 
 /**
- * Ein Tonie ist eine einzige Audiodatei mit Kapitelmarken. Dieser Player macht aus
- * "nächster/vorheriger Titel" einen Kapitelsprung – in der App, in der Benachrichtigung
- * und auf dem Sperrbildschirm.
+ * A tonie is a single audio file with chapter marks. This player turns
+ * "next/previous track" into a chapter jump – in the app, in the notification
+ * and on the lock screen.
  */
 @OptIn(UnstableApi::class)
 class ChapterPlayer(player: Player) : ForwardingPlayer(player) {

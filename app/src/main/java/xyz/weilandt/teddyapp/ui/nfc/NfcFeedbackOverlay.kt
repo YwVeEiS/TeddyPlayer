@@ -28,10 +28,10 @@ import androidx.compose.ui.unit.dp
 import xyz.weilandt.teddyapp.ui.theme.TeddyColors
 import xyz.weilandt.teddyapp.ui.theme.TeddyTheme
 
-/** Großes Symbol in der Bildschirmmitte, wenn eine Figur nicht abgespielt werden kann. */
+/** Large icon in the center of the screen when a figure can't be played. */
 @Composable
 fun NfcFeedbackOverlay(feedback: NfcFeedback?, modifier: Modifier = Modifier) {
-    // Letztes Symbol merken, damit es beim Ausblenden nicht verschwindet
+    // Remember the last icon so it doesn't disappear while fading out
     var shown by remember { mutableStateOf(feedback) }
     if (feedback != null) shown = feedback
 

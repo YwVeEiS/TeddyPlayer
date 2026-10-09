@@ -27,8 +27,8 @@ import xyz.weilandt.teddyapp.ui.theme.TeddyColors
 import xyz.weilandt.teddyapp.ui.theme.TeddyTheme
 
 /**
- * Kleines rundes Symbol am Tonie: lädt (Ring), offline da (Häkchen),
- * nicht verfügbar (Wolke durchgestrichen) oder Fehler.
+ * Small round badge on a tonie: downloading (ring), available offline (check mark),
+ * unavailable (crossed-out cloud) or error.
  */
 @Composable
 fun DownloadBadge(

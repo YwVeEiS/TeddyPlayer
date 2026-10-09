@@ -4,8 +4,8 @@ object ServerUrl {
     const val DEFAULT = "http://tc"
 
     /**
-     * Macht aus Eingaben wie `192.168.1.50/web/` eine Basis-URL `http://192.168.1.50`.
-     * Gibt `null` zurück, wenn die Eingabe leer ist.
+     * Turns input like `192.168.1.50/web/` into a base URL `http://192.168.1.50`.
+     * Returns `null` if the input is blank.
      */
     fun normalize(input: String): String? {
         var url = input.trim()

@@ -4,7 +4,7 @@ sealed interface DownloadStatus {
     data object None : DownloadStatus
     data object Queued : DownloadStatus
 
-    /** @param progress 0..1 oder `null`, wenn die Gesamtgröße noch unbekannt ist */
+    /** @param progress 0..1, or `null` while the total size is still unknown */
     data class Downloading(val progress: Float?) : DownloadStatus
     data object Completed : DownloadStatus
     data object Failed : DownloadStatus

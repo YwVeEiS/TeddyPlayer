@@ -7,25 +7,25 @@ import xyz.weilandt.teddyapp.domain.model.PlaybackSnapshot
 import xyz.weilandt.teddyapp.domain.model.Tonie
 
 interface ToniesRepository {
-    /** Tonies aus dem lokalen Cache: zuletzt gehörte zuerst, danach nach Serie und Titel, ohne Cover am Ende. */
+    /** Tonies from the local cache: recently played first, then by series and title, those without cover last. */
     fun observeTonies(): Flow<List<Tonie>>
 
-    /** `null` = noch unbekannt, sonst Ergebnis der letzten Server-Anfrage. */
+    /** `null` = not known yet, otherwise the result of the last server request. */
     val isServerReachable: StateFlow<Boolean?>
 
-    /** Lädt die Liste vom Server und aktualisiert den Cache. Liefert die Anzahl der Tonies. */
+    /** Loads the list from the server and updates the cache. Returns the number of tonies. */
     suspend fun refresh(): Result<Int>
 
-    /** Prüft eine Server-URL, ohne etwas zu speichern. Liefert die Anzahl der Tonies. */
+    /** Checks a server URL without saving anything. Returns the number of tonies. */
     suspend fun testConnection(baseUrl: String): Result<Int>
 
     suspend fun getTonie(id: String): Tonie?
 
-    /** Sucht den Tonie zu einer Figur (Tag-ID/ruid, kleingeschrieben). */
+    /** Finds the tonie for a figure (tag ID/ruid, lowercase). */
     suspend fun findByTagId(tagId: String): Tonie?
 }
 
-/** Liefert die IDs von Tonie-Figuren, die ans Gerät gehalten werden. */
+/** Emits the IDs of Tonie figures held against the device. */
 interface TonieTagReader {
     val tagIds: Flow<String>
 }
@@ -39,10 +39,10 @@ interface PlaybackProgressRepository {
 interface SettingsRepository {
     val serverUrl: Flow<String>
 
-    /** `false` bis Eltern bei der Ersteinrichtung eine Adresse gespeichert haben. */
+    /** `false` until parents have saved an address during the initial setup. */
     val isServerConfigured: Flow<Boolean>
 
-    /** Titel unter Covern anzeigen (für Kinder, die schon lesen können). */
+    /** Show titles below covers (for children who can already read). */
     val showTitles: Flow<Boolean>
 
     suspend fun setServerUrl(url: String)
@@ -56,7 +56,7 @@ interface DownloadRepository {
     fun remove(tonieId: String)
     fun removeAll()
 
-    /** Unterbrochene Downloads fortsetzen (z. B. nach App-Neustart). */
+    /** Resume interrupted downloads (e.g. after an app restart). */
     fun resumePending()
 }
 

@@ -5,7 +5,7 @@ import coil3.ImageLoader
 import coil3.request.CachePolicy
 import coil3.request.ImageRequest
 
-/** Lädt alle Cover in den Disk-Cache, damit sie auch ohne Netz angezeigt werden. */
+/** Loads all covers into the disk cache so they can be shown without a network. */
 class CoilCoverPrefetcher(
     private val context: Context,
     private val imageLoader: ImageLoader,

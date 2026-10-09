@@ -1,17 +1,17 @@
 package xyz.weilandt.teddyapp.domain.model
 
 /**
- * Umrechnung zwischen NFC-UID einer Tonie-Figur und der TeddyCloud-Tag-ID (`ruid`).
+ * Conversion between the NFC UID of a Tonie figure and the TeddyCloud tag ID (`ruid`).
  *
- * Die UID `E0:04:03:50:9D:D8:CC:4A` steht in TeddyCloud byteweise umgedreht als
- * `4accd89d500304e0`. Android liefert die Bytes je nach Gerät in der einen oder
- * anderen Reihenfolge, daher probieren wir beide.
+ * TeddyCloud stores the UID `E0:04:03:50:9D:D8:CC:4A` byte-reversed as
+ * `4accd89d500304e0`. Depending on the device, Android delivers the bytes in either
+ * order, so we try both.
  */
 object TagIds {
 
     fun toHex(bytes: ByteArray): String = bytes.joinToString("") { "%02x".format(it) }
 
-    /** Mögliche ruids für eine gelesene UID (Hex), wie geliefert zuerst. */
+    /** Possible ruids for a read UID (hex), as-delivered order first. */
     fun candidates(uidHex: String): List<String> {
         val hex = uidHex.lowercase()
         val reversed = hex.chunked(2).reversed().joinToString("")

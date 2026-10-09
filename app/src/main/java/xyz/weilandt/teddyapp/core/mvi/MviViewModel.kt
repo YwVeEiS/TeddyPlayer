@@ -12,12 +12,12 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 /**
- * Basis für alle Screens nach dem MVI-Muster:
+ * Base class for all screens following the MVI pattern:
  *
- * Intent (UI) → [onIntent] → Seiteneffekte / Daten → Result → [reduce] → neuer State
+ * Intent (UI) → [onIntent] → side effects / data → Result → [reduce] → new State
  *
- * [reduce] ist eine reine Funktion und damit ohne Android isoliert testbar.
- * Einmalige Ereignisse (Navigation, Wackeln, …) laufen über [effects].
+ * [reduce] is a pure function and can therefore be tested in isolation without Android.
+ * One-off events (navigation, shaking, …) are delivered via [effects].
  */
 abstract class MviViewModel<State, Intent, Result, Effect>(initialState: State) : ViewModel() {
 

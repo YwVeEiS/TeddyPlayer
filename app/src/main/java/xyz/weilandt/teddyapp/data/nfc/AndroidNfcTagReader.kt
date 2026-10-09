@@ -11,8 +11,8 @@ import xyz.weilandt.teddyapp.domain.model.TagIds
 import xyz.weilandt.teddyapp.domain.repository.TonieTagReader
 
 /**
- * Liest Tonie-Figuren (ISO 15693 / NFC-V) per Reader-Mode, solange eine Activity im
- * Vordergrund ist. Gelesen wird nur die UID – keine geschützten Daten vom Chip.
+ * Reads Tonie figures (ISO 15693 / NFC-V) in reader mode while an activity is in the
+ * foreground. Only the UID is read – no protected data from the chip.
  */
 class AndroidNfcTagReader(context: Context) : TonieTagReader {
 
@@ -20,7 +20,7 @@ class AndroidNfcTagReader(context: Context) : TonieTagReader {
 
     private val _tagIds = MutableSharedFlow<String>(extraBufferCapacity = 4)
 
-    /** Gelesene UIDs als Hex (Byte-Reihenfolge wie von Android geliefert). */
+    /** Read UIDs as hex (byte order as delivered by Android). */
     override val tagIds: Flow<String> = _tagIds.asSharedFlow()
 
     fun enable(activity: Activity) {

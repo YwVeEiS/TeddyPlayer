@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- TeddyCloud läuft im Heimnetz per HTTP; die Adresse ist im Elternbereich änderbar. -->
+<!-- TeddyCloud runs on the home network via plain HTTP; the address can be changed in the parent area. -->
 <network-security-config>
     <base-config cleartextTrafficPermitted="true" />
 </network-security-config>

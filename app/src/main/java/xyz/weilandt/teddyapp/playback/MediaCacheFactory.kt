@@ -14,9 +14,9 @@ import java.io.File
 import java.util.concurrent.Executors
 
 /**
- * Gemeinsamer Audio-Cache für Player und Downloads – das "Toniebox-Prinzip":
- * Beim Abspielen landet alles Gestreamte im Cache, parallel lädt der [DownloadManager]
- * den Rest. Danach spielt der Tonie komplett offline. Nichts wird automatisch gelöscht.
+ * Shared audio cache for player and downloads – the "Toniebox principle":
+ * while playing, everything streamed ends up in the cache and the [DownloadManager]
+ * fetches the rest in parallel. Afterwards the tonie plays fully offline. Nothing is evicted automatically.
  */
 @OptIn(UnstableApi::class)
 object MediaCacheFactory {

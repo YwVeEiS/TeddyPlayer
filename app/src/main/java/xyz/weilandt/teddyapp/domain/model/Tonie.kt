@@ -1,14 +1,14 @@
 package xyz.weilandt.teddyapp.domain.model
 
 /**
- * Ein abspielbarer Tonie. Mehrere Tags auf dem Server mit derselben Audiodatei
- * werden zu einem Tonie zusammengefasst.
+ * A playable tonie. Several tags on the server sharing the same audio file are merged
+ * into one tonie.
  *
- * @param id stabile ID, zugleich Download- und Cache-Schlüssel
- * @param audioPath Pfad relativ zur Server-URL (z. B. `/content/download/…`)
- * @param coverUrl absolute URL oder `null`, wenn es kein Cover gibt
- * @param chapterStartsMs Startzeitpunkte der Kapitel, beginnend mit 0
- * @param tagIds alle Tag-IDs (ruid) mit diesem Inhalt – für das Erkennen per NFC
+ * @param id stable ID, also used as download and cache key
+ * @param audioPath path relative to the server URL (e.g. `/content/download/…`)
+ * @param coverUrl absolute URL, or `null` if there is no cover
+ * @param chapterStartsMs chapter start times, beginning with 0
+ * @param tagIds all tag IDs (ruid) with this content – for NFC detection
  */
 data class Tonie(
     val id: String,
@@ -19,11 +19,11 @@ data class Tonie(
     val chapterStartsMs: List<Long>,
     val tagIds: List<String> = emptyList(),
 ) {
-    /** Kurzer Titel für die Anzeige unter dem Cover. */
+    /** Short title shown below the cover. */
     val shortTitle: String
         get() = title.ifBlank { series }
 
-    /** Name für Eltern/TalkBack – Kinder sehen nur das Cover. */
+    /** Name for parents/TalkBack – children only see the cover. */
     val displayName: String
         get() = when {
             series.isBlank() -> title

@@ -21,11 +21,11 @@ class TeddyPlayerApp : Application(), SingletonImageLoader.Factory {
             androidContext(this@TeddyPlayerApp)
             modules(appModules)
         }
-        // DownloadManager muss auf dem Main-Thread entstehen und früh den Stand laden.
+        // The DownloadManager must be created on the main thread and load its state early.
         get<DownloadRepository>()
     }
 
-    /** Cover liegen in filesDir statt cacheDir, damit Android sie offline nicht wegräumt. */
+    /** Covers live in filesDir instead of cacheDir so Android doesn't evict them while offline. */
     override fun newImageLoader(context: PlatformContext): ImageLoader =
         ImageLoader.Builder(context)
             .diskCache {

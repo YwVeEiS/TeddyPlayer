@@ -44,9 +44,9 @@ import xyz.weilandt.teddyapp.ui.theme.TeddyTheme
 private val TileShape = RoundedCornerShape(28.dp)
 
 /**
- * Eine Kachel im Grid.
+ * A tile in the grid.
  *
- * @param shakeTrigger jede Änderung lässt die Kachel wackeln ("geht gerade nicht")
+ * @param shakeTrigger every change makes the tile shake ("not possible right now")
  */
 @Composable
 fun TonieTile(

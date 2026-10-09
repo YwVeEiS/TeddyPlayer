@@ -30,7 +30,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            // Bis ein eigener Release-Key existiert, mit dem Debug-Key signieren.
+            // Sign with the debug key until a dedicated release key exists.
             signingConfig = signingConfigs.getByName("debug")
         }
     }
@@ -93,6 +93,6 @@ dependencies {
 }
 
 tasks.withType<Test>().configureEach {
-    // Schutz gegen hängende Coroutine-Tests
+    // Guard against hanging coroutine tests
     timeout.set(Duration.ofMinutes(3))
 }

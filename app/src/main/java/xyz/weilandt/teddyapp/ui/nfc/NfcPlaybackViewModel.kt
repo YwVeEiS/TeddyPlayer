@@ -18,8 +18,8 @@ import xyz.weilandt.teddyapp.domain.repository.TonieTagReader
 import xyz.weilandt.teddyapp.domain.repository.ToniesRepository
 
 /**
- * Figur ans Gerät halten → Tonie startet und der Player öffnet sich – auf jedem Bildschirm.
- * Lebt auf Ebene der Navigation, damit es überall aktiv ist.
+ * Hold a figure against the device → the tonie starts and the player opens – on every screen.
+ * Lives at navigation level so it is active everywhere.
  */
 class NfcPlaybackViewModel(
     private val tonies: ToniesRepository,
@@ -47,7 +47,7 @@ class NfcPlaybackViewModel(
     }
 
     private fun onTag(uidHex: String) {
-        // Liegt die Figur länger am Gerät, meldet Android sie ggf. mehrfach
+        // If the figure stays on the device, Android may report it several times
         val now = clock()
         if (uidHex == lastTag && now - lastTagAt < REPEAT_WINDOW_MS) return
         lastTag = uidHex
@@ -67,7 +67,7 @@ class NfcPlaybackViewModel(
         }
     }
 
-    /** Wie im Grid: offline nur, was komplett heruntergeladen ist. */
+    /** Same as the grid: offline, only fully downloaded tonies. */
     private suspend fun isPlayable(tonie: Tonie): Boolean {
         if (downloads.downloads.value[tonie.id]?.status == DownloadStatus.Completed) return true
         return network.isNetworkAvailable.first() && tonies.isServerReachable.value != false

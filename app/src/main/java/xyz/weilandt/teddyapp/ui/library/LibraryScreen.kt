@@ -148,7 +148,7 @@ private fun TonieGrid(
 ) {
     val playingId = state.playback.tonieId
     BoxWithConstraints(Modifier.fillMaxSize()) {
-        // Handy: immer 2 große Kacheln; Tablet: so viele Spalten wie passen (hoch ~4, quer ~6)
+        // Phone: always 2 large tiles; tablet: as many columns as fit (portrait ~3, landscape ~6)
         val isCompact = maxWidth < 600.dp
         val spacing = if (isCompact) 16.dp else 24.dp
         LazyVerticalGrid(

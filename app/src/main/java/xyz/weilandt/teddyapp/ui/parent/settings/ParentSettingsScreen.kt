@@ -104,7 +104,7 @@ fun ParentSettingsScreen(
                 bottom = padding.calculateBottomPadding() + 24.dp,
             ),
             verticalArrangement = Arrangement.spacedBy(12.dp),
-            // Auf Tablets eine lesbare Spalte in der Mitte statt Zeilen über die ganze Breite
+            // On tablets, a readable centered column instead of rows across the full width
             modifier = Modifier
                 .fillMaxSize()
                 .wrapContentWidth(Alignment.CenterHorizontally)
