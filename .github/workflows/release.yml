@@ -1,6 +1,7 @@
 name: Release
 
-# Push a tag like v1.0.0 → build, test, sign and publish the APK as a GitHub release.
+# Push a tag like v1.0.0 → build, test, sign and publish the APK (sideloading) and AAB (Google Play)
+# as a GitHub release.
 on:
   push:
     tags: ['v*']
@@ -35,7 +36,7 @@ jobs:
       - name: Decode keystore
         run: echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > "$RUNNER_TEMP/release.jks"
 
-      - name: Test and build release APK
+      - name: Test and build release APK and AAB
         env:
           TEDDYPLAYER_KEYSTORE: ${{ runner.temp }}/release.jks
           TEDDYPLAYER_KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
@@ -43,11 +44,14 @@ jobs:
           TEDDYPLAYER_KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
         run: |
           VERSION="${GITHUB_REF_NAME#v}"
-          ./gradlew :app:testDebugUnitTest :app:assembleRelease -PversionName="$VERSION"
+          ./gradlew :app:testDebugUnitTest :app:assembleRelease :app:bundleRelease -PversionName="$VERSION"
           mv app/build/outputs/apk/release/app-release.apk "TeddyPlayer-$VERSION.apk"
+          mv app/build/outputs/bundle/release/app-release.aab "TeddyPlayer-$VERSION.aab"
 
       - name: Publish GitHub release
         uses: softprops/action-gh-release@v2
         with:
-          files: TeddyPlayer-*.apk
+          files: |
+            TeddyPlayer-*.apk
+            TeddyPlayer-*.aab
           generate_release_notes: true
