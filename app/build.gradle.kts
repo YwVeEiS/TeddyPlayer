@@ -1,5 +1,15 @@
 import java.time.Duration
 
+// Release signing comes from environment variables (GitHub Actions secrets).
+// Without them, release builds fall back to the debug key so anyone can build the project.
+val releaseKeystore: String? = System.getenv("TEDDYPLAYER_KEYSTORE")
+
+// Version from the release tag, e.g. -PversionName=1.2.3 → versionCode 10203
+val appVersionName = (findProperty("versionName") as String?) ?: "1.0.0"
+val appVersionCode = appVersionName.split('.').map { it.toIntOrNull() ?: 0 }
+    .let { (it + listOf(0, 0, 0)).take(3) }
+    .let { (major, minor, patch) -> major * 10_000 + minor * 100 + patch }
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
@@ -18,8 +28,19 @@ android {
         applicationId = "xyz.weilandt.teddyapp"
         minSdk = 29
         targetSdk = 36
-        versionCode = 1
-        versionName = "1.0.0"
+        versionCode = appVersionCode
+        versionName = appVersionName
+    }
+
+    signingConfigs {
+        if (releaseKeystore != null) {
+            create("release") {
+                storeFile = file(releaseKeystore)
+                storePassword = System.getenv("TEDDYPLAYER_KEYSTORE_PASSWORD")
+                keyAlias = System.getenv("TEDDYPLAYER_KEY_ALIAS")
+                keyPassword = System.getenv("TEDDYPLAYER_KEY_PASSWORD")
+            }
+        }
     }
 
     buildTypes {
@@ -30,8 +51,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            // Sign with the debug key until a dedicated release key exists.
-            signingConfig = signingConfigs.getByName("debug")
+            signingConfig = signingConfigs.findByName("release") ?: signingConfigs.getByName("debug")
         }
     }
     compileOptions {

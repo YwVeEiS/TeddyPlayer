@@ -35,7 +35,12 @@ Die Bedienung kommt ohne Text aus, damit auch Kinder, die noch nicht lesen könn
 - Android 10 (API 29) oder neuer
 - Zum Bauen: JDK 17+ und das Android SDK (z. B. über Android Studio)
 
-## Loslegen
+## Download
+
+Die aktuelle `TeddyPlayer-x.y.z.apk` gibt es auf der [Releases](../../releases/latest)-Seite. Einfach auf dem
+Android-Gerät herunterladen und installieren (ggf. die Installation aus Browser oder Dateimanager erlauben).
+
+## Selbst bauen
 
 ```bash
 git clone <dieses Repository>
@@ -47,14 +52,14 @@ Beim ersten Start die Adresse des TeddyCloud-Servers eingeben, z. B. `http://tc`
 Ein angehängtes `/web` (Adresse der TeddyCloud-Weboberfläche) wird automatisch entfernt.
 Die App spricht im Heimnetz per HTTP mit TeddyCloud.
 
-Release-Build:
+## Releases
 
-```bash
-./gradlew :app:assembleRelease
-```
+Releases baut [GitHub Actions](.github/workflows/release.yml): Ein Tag wie `v1.2.3` startet die Tests, baut eine
+signierte Release-APK (`versionName` 1.2.3, `versionCode` 10203) und veröffentlicht sie als GitHub-Release.
 
-Der Release-Build ist derzeit mit dem Debug-Schlüssel signiert. Vor einer Weitergabe eine eigene Signierung in
-`app/build.gradle.kts` einrichten.
+Der Workflow braucht diese Repository-Secrets: `KEYSTORE_BASE64` (Keystore, Base64-kodiert), `KEYSTORE_PASSWORD`,
+`KEY_ALIAS` und `KEY_PASSWORD`.
+Ein lokales `./gradlew :app:assembleRelease` ohne die `TEDDYPLAYER_*`-Umgebungsvariablen wird mit dem Debug-Schlüssel signiert.
 
 ## Architektur
 
