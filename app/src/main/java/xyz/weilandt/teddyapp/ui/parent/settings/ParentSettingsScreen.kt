@@ -44,6 +44,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -54,6 +56,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.compose.viewmodel.koinViewModel
+import xyz.weilandt.teddyapp.R
 import xyz.weilandt.teddyapp.domain.model.DownloadStatus
 import xyz.weilandt.teddyapp.domain.model.ServerUrl
 import xyz.weilandt.teddyapp.ui.components.DownloadBadge
@@ -87,10 +90,10 @@ fun ParentSettingsScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Elternbereich") },
+                title = { Text(stringResource(R.string.parent_area)) },
                 navigationIcon = {
                     IconButton(onClick = { onIntent(ParentSettingsIntent.Back) }) {
-                        Icon(Icons.AutoMirrored.Rounded.ArrowBack, contentDescription = "Zurück")
+                        Icon(Icons.AutoMirrored.Rounded.ArrowBack, contentDescription = stringResource(R.string.back))
                     }
                 },
             )
@@ -126,7 +129,7 @@ fun ParentSettingsScreen(
             if (state.downloads.isEmpty()) {
                 item {
                     Text(
-                        "Noch nichts heruntergeladen. Tonies werden beim ersten Abspielen automatisch gespeichert.",
+                        stringResource(R.string.settings_no_downloads),
                         style = MaterialTheme.typography.bodyMedium,
                         color = TeddyColors.Muted,
                     )
@@ -138,13 +141,13 @@ fun ParentSettingsScreen(
     if (state.confirmDeleteAll) {
         AlertDialog(
             onDismissRequest = { onIntent(ParentSettingsIntent.DeleteAllDismissed) },
-            title = { Text("Alle Downloads löschen?") },
-            text = { Text("Die Tonies sind danach nur noch im Heim-WLAN abspielbar und werden beim nächsten Abspielen neu geladen.") },
+            title = { Text(stringResource(R.string.settings_delete_all_title)) },
+            text = { Text(stringResource(R.string.settings_delete_all_message)) },
             confirmButton = {
-                TextButton(onClick = { onIntent(ParentSettingsIntent.DeleteAllConfirmed) }) { Text("Löschen") }
+                TextButton(onClick = { onIntent(ParentSettingsIntent.DeleteAllConfirmed) }) { Text(stringResource(R.string.delete)) }
             },
             dismissButton = {
-                TextButton(onClick = { onIntent(ParentSettingsIntent.DeleteAllDismissed) }) { Text("Abbrechen") }
+                TextButton(onClick = { onIntent(ParentSettingsIntent.DeleteAllDismissed) }) { Text(stringResource(R.string.cancel)) }
             },
         )
     }
@@ -153,11 +156,11 @@ fun ParentSettingsScreen(
 @Composable
 private fun ServerSection(state: ParentSettingsState, onIntent: (ParentSettingsIntent) -> Unit) {
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        Text("TeddyCloud-Server", style = MaterialTheme.typography.titleMedium)
+        Text(stringResource(R.string.settings_server), style = MaterialTheme.typography.titleMedium)
         OutlinedTextField(
             value = state.serverUrlInput,
             onValueChange = { onIntent(ParentSettingsIntent.UrlChanged(it)) },
-            label = { Text("Adresse") },
+            label = { Text(stringResource(R.string.address)) },
             placeholder = { Text(ServerUrl.DEFAULT) },
             singleLine = true,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri, imeAction = ImeAction.Done),
@@ -167,7 +170,13 @@ private fun ServerSection(state: ParentSettingsState, onIntent: (ParentSettingsI
             Button(
                 onClick = { onIntent(ParentSettingsIntent.SaveUrl) },
                 enabled = state.connection != ConnectionTest.Testing,
-            ) { Text(if (state.isUrlChanged) "Prüfen & speichern" else "Verbindung prüfen") }
+            ) {
+                Text(
+                    stringResource(
+                        if (state.isUrlChanged) R.string.settings_check_and_save else R.string.settings_check_connection
+                    )
+                )
+            }
             Spacer(Modifier.width(8.dp))
             OutlinedButton(
                 onClick = { onIntent(ParentSettingsIntent.Refresh) },
@@ -179,7 +188,7 @@ private fun ServerSection(state: ParentSettingsState, onIntent: (ParentSettingsI
                     Icon(Icons.Rounded.Refresh, contentDescription = null, modifier = Modifier.size(18.dp))
                 }
                 Spacer(Modifier.width(6.dp))
-                Text("Liste laden")
+                Text(stringResource(R.string.settings_reload_list))
             }
         }
         ConnectionStatus(state.connection, state.tonieCount)
@@ -195,9 +204,9 @@ private fun DisplaySection(showTitles: Boolean, onShowTitlesChange: (Boolean) ->
             .toggleable(value = showTitles, role = Role.Switch, onValueChange = onShowTitlesChange),
     ) {
         Column(Modifier.weight(1f)) {
-            Text("Titel anzeigen", style = MaterialTheme.typography.titleMedium)
+            Text(stringResource(R.string.show_titles), style = MaterialTheme.typography.titleMedium)
             Text(
-                "Zeigt die Namen unter den Tonies und im Player – für Kinder, die schon lesen können.",
+                stringResource(R.string.settings_show_titles_hint),
                 style = MaterialTheme.typography.bodyMedium,
                 color = TeddyColors.Muted,
             )
@@ -210,22 +219,23 @@ private fun DisplaySection(showTitles: Boolean, onShowTitlesChange: (Boolean) ->
 @Composable
 private fun ConnectionStatus(connection: ConnectionTest, tonieCount: Int) {
     val (text, color) = when (connection) {
-        ConnectionTest.Idle -> "$tonieCount Tonies in der App" to TeddyColors.Muted
-        ConnectionTest.Testing -> "Verbinde …" to TeddyColors.Muted
-        is ConnectionTest.Success -> "Verbunden – ${connection.tonieCount} Tonies gefunden" to TeddyColors.Success
-        ConnectionTest.Failed -> "Server nicht erreichbar" to TeddyColors.Primary
-        ConnectionTest.InvalidUrl -> "Bitte eine Adresse eingeben" to TeddyColors.Primary
+        ConnectionTest.Idle -> pluralStringResource(R.plurals.settings_tonies_in_app, tonieCount, tonieCount) to TeddyColors.Muted
+        ConnectionTest.Testing -> stringResource(R.string.settings_connecting) to TeddyColors.Muted
+        is ConnectionTest.Success -> pluralStringResource(R.plurals.connection_success, connection.tonieCount, connection.tonieCount) to TeddyColors.Success
+        ConnectionTest.Failed -> stringResource(R.string.settings_connection_failed) to TeddyColors.Primary
+        ConnectionTest.InvalidUrl -> stringResource(R.string.connection_invalid_url) to TeddyColors.Primary
     }
     Text(text, color = color, style = MaterialTheme.typography.bodyMedium)
 }
 
 @Composable
 private fun StorageSection(state: ParentSettingsState, onIntent: (ParentSettingsIntent) -> Unit) {
+    val completedCount = state.downloads.count { it.status == DownloadStatus.Completed }
     Row(verticalAlignment = Alignment.CenterVertically) {
         Column(Modifier.weight(1f)) {
-            Text("Offline gespeichert", style = MaterialTheme.typography.titleMedium)
+            Text(stringResource(R.string.settings_saved_offline), style = MaterialTheme.typography.titleMedium)
             Text(
-                "${state.downloads.count { it.status == DownloadStatus.Completed }} Tonies · ${formatBytes(state.usedBytes)}",
+                pluralStringResource(R.plurals.settings_downloads_summary, completedCount, completedCount, formatBytes(state.usedBytes)),
                 style = MaterialTheme.typography.bodyMedium,
                 color = TeddyColors.Muted,
             )
@@ -233,7 +243,7 @@ private fun StorageSection(state: ParentSettingsState, onIntent: (ParentSettings
         OutlinedButton(
             onClick = { onIntent(ParentSettingsIntent.DeleteAllRequested) },
             enabled = state.downloads.isNotEmpty(),
-        ) { Text("Alle löschen") }
+        ) { Text(stringResource(R.string.settings_delete_all)) }
     }
 }
 
@@ -249,7 +259,7 @@ private fun DownloadRow(entry: DownloadEntry, onDelete: () -> Unit) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 DownloadBadge(entry.status, isUnavailable = false, size = 28.dp)
                 IconButton(onClick = onDelete) {
-                    Icon(Icons.Rounded.Delete, contentDescription = "Download löschen")
+                    Icon(Icons.Rounded.Delete, contentDescription = stringResource(R.string.settings_delete_download))
                 }
             }
         },

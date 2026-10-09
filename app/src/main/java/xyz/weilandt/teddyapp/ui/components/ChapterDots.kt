@@ -18,11 +18,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import xyz.weilandt.teddyapp.R
 import xyz.weilandt.teddyapp.ui.theme.TeddyColors
 import xyz.weilandt.teddyapp.ui.theme.TeddyTheme
 
@@ -48,6 +50,7 @@ fun ChapterDots(
     ) {
         repeat(chapterCount) { index ->
             val isCurrent = index == currentChapter
+            val label = stringResource(R.string.chapter_number, index + 1)
             val size by animateDpAsState(if (isCurrent) dotSize * 1.5f else dotSize, label = "dotSize")
             Box(
                 modifier = Modifier
@@ -58,7 +61,7 @@ fun ChapterDots(
                     )
                     .border(2.dp, if (isCurrent) TeddyColors.Primary else TeddyColors.Muted.copy(alpha = 0f), CircleShape)
                     .clickable { onChapterClick(index) }
-                    .semantics { contentDescription = "Kapitel ${index + 1}" },
+                    .semantics { contentDescription = label },
             ) {
                 if (isCurrent) {
                     Box(

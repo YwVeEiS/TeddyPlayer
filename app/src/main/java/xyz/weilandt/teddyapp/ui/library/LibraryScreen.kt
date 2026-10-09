@@ -33,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -40,6 +41,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.compose.viewmodel.koinViewModel
+import xyz.weilandt.teddyapp.R
 import xyz.weilandt.teddyapp.domain.model.DownloadStatus
 import xyz.weilandt.teddyapp.domain.model.PlaybackSnapshot
 import xyz.weilandt.teddyapp.ui.components.BigIconButton
@@ -130,7 +132,7 @@ private fun TopRow(isOnline: Boolean, onOpenParentArea: () -> Unit) {
         if (!isOnline) {
             Icon(
                 imageVector = Icons.Rounded.CloudOff,
-                contentDescription = "Offline",
+                contentDescription = stringResource(R.string.offline),
                 tint = TeddyColors.Muted,
                 modifier = Modifier.size(32.dp),
             )
@@ -196,7 +198,7 @@ private fun CenteredMessage(icon: ImageVector, onRetry: () -> Unit) {
         Spacer(Modifier.height(32.dp))
         BigIconButton(
             icon = Icons.Rounded.Refresh,
-            contentDescription = "Nochmal versuchen",
+            contentDescription = stringResource(R.string.retry),
             onClick = onRetry,
             containerColor = TeddyColors.Secondary,
         )

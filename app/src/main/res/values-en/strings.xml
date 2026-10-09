@@ -1,0 +1,64 @@
+<resources>
+    <string name="download_channel_name">Downloads</string>
+
+    <!-- Common -->
+    <string name="address">Address</string>
+    <string name="show_titles">Show titles</string>
+    <string name="back">Back</string>
+    <string name="cancel">Cancel</string>
+    <string name="delete">Delete</string>
+    <string name="play">Play</string>
+    <string name="pause">Pause</string>
+    <string name="offline">Offline</string>
+    <string name="error">Error</string>
+    <string name="retry">Try again</string>
+    <string name="connection_invalid_url">Please enter an address</string>
+    <plurals name="connection_success">
+        <item quantity="one">Connected – %d Tonie found</item>
+        <item quantity="other">Connected – %d Tonies found</item>
+    </plurals>
+
+    <!-- Server setup -->
+    <string name="setup_title">Connect TeddyCloud</string>
+    <string name="setup_message">Which address does your TeddyCloud server have on your home network?</string>
+    <string name="setup_show_titles_hint">Names below the Tonies – for children who can already read. Can be changed later in the parent area.</string>
+    <string name="setup_connect">Connect</string>
+    <string name="setup_save_anyway">Save anyway</string>
+    <string name="setup_connection_failed">Server not reachable. Check the address or save anyway.</string>
+
+    <!-- Player -->
+    <string name="open_player">Open player</string>
+    <string name="back_to_library">Back to overview</string>
+    <string name="chapter_previous">Previous chapter</string>
+    <string name="chapter_next">Next chapter</string>
+    <string name="chapter_number">Chapter %d</string>
+
+    <!-- Parent gate -->
+    <string name="parent_area_hold">Parent area (press and hold)</string>
+    <string name="gate_title">Parents only</string>
+    <string name="gate_wrong">Not quite – here is a new task</string>
+
+    <!-- Parent settings -->
+    <string name="parent_area">Parent area</string>
+    <string name="settings_server">TeddyCloud server</string>
+    <string name="settings_check_and_save">Check &amp; save</string>
+    <string name="settings_check_connection">Check connection</string>
+    <string name="settings_reload_list">Reload list</string>
+    <string name="settings_show_titles_hint">Shows the names below the Tonies and in the player – for children who can already read.</string>
+    <plurals name="settings_tonies_in_app">
+        <item quantity="one">%d Tonie in the app</item>
+        <item quantity="other">%d Tonies in the app</item>
+    </plurals>
+    <string name="settings_connecting">Connecting …</string>
+    <string name="settings_connection_failed">Server not reachable</string>
+    <string name="settings_saved_offline">Saved offline</string>
+    <plurals name="settings_downloads_summary">
+        <item quantity="one">%1$d Tonie · %2$s</item>
+        <item quantity="other">%1$d Tonies · %2$s</item>
+    </plurals>
+    <string name="settings_delete_all">Delete all</string>
+    <string name="settings_delete_download">Delete download</string>
+    <string name="settings_no_downloads">Nothing downloaded yet. Tonies are saved automatically the first time they are played.</string>
+    <string name="settings_delete_all_title">Delete all downloads?</string>
+    <string name="settings_delete_all_message">The Tonies can then only be played on your home Wi-Fi and will be downloaded again the next time they are played.</string>
+</resources>

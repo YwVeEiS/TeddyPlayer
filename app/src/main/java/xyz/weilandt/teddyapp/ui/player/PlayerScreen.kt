@@ -1,24 +1,20 @@
 package xyz.weilandt.teddyapp.ui.player
 
 import androidx.compose.foundation.background
-import xyz.weilandt.teddyapp.ui.preview.TABLET_PORTRAIT
-import xyz.weilandt.teddyapp.domain.model.Tonie
-import androidx.compose.ui.tooling.preview.Devices
-import androidx.compose.ui.unit.Dp
-import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.CloudOff
 import androidx.compose.material.icons.rounded.Home
@@ -37,19 +33,25 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.compose.viewmodel.koinViewModel
+import xyz.weilandt.teddyapp.R
+import xyz.weilandt.teddyapp.domain.model.Tonie
 import xyz.weilandt.teddyapp.ui.components.BigIconButton
 import xyz.weilandt.teddyapp.ui.components.ChapterDots
 import xyz.weilandt.teddyapp.ui.components.TonieCover
 import xyz.weilandt.teddyapp.ui.preview.SampleData
+import xyz.weilandt.teddyapp.ui.preview.TABLET_PORTRAIT
 import xyz.weilandt.teddyapp.ui.theme.TeddyColors
 import xyz.weilandt.teddyapp.ui.theme.TeddyTheme
 
@@ -124,7 +126,7 @@ fun PlayerScreen(
 
         BigIconButton(
             icon = Icons.Rounded.Home,
-            contentDescription = "Zurück zur Übersicht",
+            contentDescription = stringResource(R.string.back_to_library),
             onClick = { onIntent(PlayerIntent.Close) },
             size = sizes.home,
             containerColor = TeddyColors.Secondary,
@@ -149,7 +151,7 @@ private fun PlayerCover(state: PlayerState, tonie: Tonie, modifier: Modifier) {
             grayscale = state.hasError,
         )
         if (state.hasError) {
-            Icon(Icons.Rounded.CloudOff, contentDescription = "Fehler", tint = TeddyColors.Warning, modifier = Modifier.size(120.dp))
+            Icon(Icons.Rounded.CloudOff, contentDescription = stringResource(R.string.error), tint = TeddyColors.Warning, modifier = Modifier.size(120.dp))
         }
     }
 }
@@ -197,7 +199,7 @@ private fun PlayerControls(state: PlayerState, sizes: ControlSizes, onIntent: (P
     ) {
         BigIconButton(
             icon = Icons.Rounded.SkipPrevious,
-            contentDescription = "Kapitel zurück",
+            contentDescription = stringResource(R.string.chapter_previous),
             onClick = { onIntent(PlayerIntent.PreviousChapter) },
             size = sizes.side,
             containerColor = TeddyColors.Tertiary,
@@ -210,7 +212,7 @@ private fun PlayerControls(state: PlayerState, sizes: ControlSizes, onIntent: (P
                     state.isPlaying -> Icons.Rounded.Pause
                     else -> Icons.Rounded.PlayArrow
                 },
-                contentDescription = if (state.isPlaying) "Pause" else "Abspielen",
+                contentDescription = stringResource(if (state.isPlaying) R.string.pause else R.string.play),
                 onClick = { onIntent(PlayerIntent.TogglePlayPause) },
                 size = sizes.play,
             )
@@ -224,7 +226,7 @@ private fun PlayerControls(state: PlayerState, sizes: ControlSizes, onIntent: (P
         }
         BigIconButton(
             icon = Icons.Rounded.SkipNext,
-            contentDescription = "Kapitel vor",
+            contentDescription = stringResource(R.string.chapter_next),
             onClick = { onIntent(PlayerIntent.NextChapter) },
             size = sizes.side,
             containerColor = TeddyColors.Tertiary,

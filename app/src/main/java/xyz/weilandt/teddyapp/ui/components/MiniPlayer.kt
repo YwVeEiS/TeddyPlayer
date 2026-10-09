@@ -30,12 +30,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import xyz.weilandt.teddyapp.R
 import xyz.weilandt.teddyapp.domain.model.Tonie
 import xyz.weilandt.teddyapp.ui.preview.SampleData
 import xyz.weilandt.teddyapp.ui.theme.TeddyColors
@@ -56,6 +58,7 @@ fun MiniPlayer(
     modifier: Modifier = Modifier,
     showTitle: Boolean = false,
 ) {
+    val openPlayerLabel = stringResource(R.string.open_player)
     Surface(
         modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp),
@@ -75,7 +78,7 @@ fun MiniPlayer(
                 modifier = Modifier
                     .weight(1f)
                     .clickable(onClick = onOpen)
-                    .semantics { contentDescription = "Player öffnen" },
+                    .semantics { contentDescription = openPlayerLabel },
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 TonieCover(
@@ -102,7 +105,7 @@ fun MiniPlayer(
             Box(contentAlignment = Alignment.Center) {
                 BigIconButton(
                     icon = if (isPlaying) Icons.Rounded.Pause else Icons.Rounded.PlayArrow,
-                    contentDescription = if (isPlaying) "Pause" else "Abspielen",
+                    contentDescription = stringResource(if (isPlaying) R.string.pause else R.string.play),
                     onClick = onTogglePlayPause,
                     size = 72.dp,
                 )

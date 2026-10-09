@@ -14,7 +14,7 @@ TeddyPlayer erhebt, speichert oder überträgt keine personenbezogenen Daten an 
   werden nur auf deinem Gerät gespeichert. Sie werden beim Deinstallieren der App gelöscht und können im
   Elternbereich jederzeit gelöscht werden.
 
-Fragen: über die Issues des GitHub-Repositorys oder per E-Mail an KONTAKT-EMAIL.
+Fragen: über die Issues des GitHub-Repositorys oder per E-Mail an 119738471+YwVeEiS@users.noreply.github.com.
 
 ## English
 
@@ -27,4 +27,4 @@ TeddyPlayer does not collect, store or transmit any personal data to the develop
   stored only on your device. They are removed when the app is uninstalled and can be deleted at any time in the
   parent area.
 
-Questions: via the GitHub repository's issues or by email to CONTACT-EMAIL.
+Questions: via the GitHub repository's issues or by email to 119738471+YwVeEiS@users.noreply.github.com.

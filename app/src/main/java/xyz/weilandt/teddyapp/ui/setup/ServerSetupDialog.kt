@@ -25,6 +25,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -35,6 +37,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.compose.viewmodel.koinViewModel
+import xyz.weilandt.teddyapp.R
 import xyz.weilandt.teddyapp.domain.model.ServerUrl
 import xyz.weilandt.teddyapp.ui.parent.settings.ConnectionTest
 import xyz.weilandt.teddyapp.ui.theme.TeddyColors
@@ -56,14 +59,14 @@ fun ServerSetupDialog(
         onDismissRequest = {},
         properties = DialogProperties(dismissOnBackPress = false, dismissOnClickOutside = false),
         icon = { Icon(Icons.Rounded.Dns, contentDescription = null) },
-        title = { Text("TeddyCloud verbinden") },
+        title = { Text(stringResource(R.string.setup_title)) },
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                Text("Unter welcher Adresse ist dein TeddyCloud-Server im Heimnetz erreichbar?")
+                Text(stringResource(R.string.setup_message))
                 OutlinedTextField(
                     value = state.urlInput,
                     onValueChange = { onIntent(ServerSetupIntent.UrlChanged(it)) },
-                    label = { Text("Adresse") },
+                    label = { Text(stringResource(R.string.address)) },
                     placeholder = { Text(ServerUrl.DEFAULT) },
                     singleLine = true,
                     enabled = !state.isTesting,
@@ -84,9 +87,9 @@ fun ServerSetupDialog(
                         ),
                 ) {
                     Column(Modifier.weight(1f)) {
-                        Text("Titel anzeigen", style = MaterialTheme.typography.titleSmall)
+                        Text(stringResource(R.string.show_titles), style = MaterialTheme.typography.titleSmall)
                         Text(
-                            "Namen unter den Tonies – für Kinder, die schon lesen können. Später im Elternbereich änderbar.",
+                            stringResource(R.string.setup_show_titles_hint),
                             style = MaterialTheme.typography.bodySmall,
                             color = TeddyColors.Muted,
                         )
@@ -101,13 +104,13 @@ fun ServerSetupDialog(
                 if (state.isTesting) {
                     CircularProgressIndicator(Modifier.size(18.dp), strokeWidth = 2.dp, color = TeddyColors.OnPrimary)
                 } else {
-                    Text("Verbinden")
+                    Text(stringResource(R.string.setup_connect))
                 }
             }
         },
         dismissButton = {
             if (state.canSaveAnyway) {
-                TextButton(onClick = { onIntent(ServerSetupIntent.SaveAnyway) }) { Text("Trotzdem speichern") }
+                TextButton(onClick = { onIntent(ServerSetupIntent.SaveAnyway) }) { Text(stringResource(R.string.setup_save_anyway)) }
             }
         },
     )
@@ -117,9 +120,9 @@ fun ServerSetupDialog(
 private fun SetupStatus(connection: ConnectionTest) {
     val (text, color) = when (connection) {
         ConnectionTest.Idle, ConnectionTest.Testing -> return
-        is ConnectionTest.Success -> "Verbunden – ${connection.tonieCount} Tonies gefunden" to TeddyColors.Success
-        ConnectionTest.Failed -> "Server nicht erreichbar. Adresse prüfen oder trotzdem speichern." to TeddyColors.Primary
-        ConnectionTest.InvalidUrl -> "Bitte eine Adresse eingeben" to TeddyColors.Primary
+        is ConnectionTest.Success -> pluralStringResource(R.plurals.connection_success, connection.tonieCount, connection.tonieCount) to TeddyColors.Success
+        ConnectionTest.Failed -> stringResource(R.string.setup_connection_failed) to TeddyColors.Primary
+        ConnectionTest.InvalidUrl -> stringResource(R.string.connection_invalid_url) to TeddyColors.Primary
     }
     Text(text, color = color, style = MaterialTheme.typography.bodyMedium)
 }

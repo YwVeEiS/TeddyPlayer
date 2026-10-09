@@ -26,6 +26,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
@@ -35,6 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.compose.viewmodel.koinViewModel
+import xyz.weilandt.teddyapp.R
 import xyz.weilandt.teddyapp.ui.theme.TeddyColors
 import xyz.weilandt.teddyapp.ui.theme.TeddyTheme
 
@@ -71,11 +73,11 @@ fun ParentGateScreen(
     ) {
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
             IconButton(onClick = { onIntent(ParentGateIntent.Cancel) }) {
-                Icon(Icons.Rounded.Close, contentDescription = "Abbrechen")
+                Icon(Icons.Rounded.Close, contentDescription = stringResource(R.string.cancel))
             }
         }
         Spacer(Modifier.height(24.dp))
-        Text("Nur für Eltern", style = MaterialTheme.typography.titleMedium, color = TeddyColors.Muted)
+        Text(stringResource(R.string.gate_title), style = MaterialTheme.typography.titleMedium, color = TeddyColors.Muted)
         Spacer(Modifier.height(16.dp))
         Text(
             text = "${state.a} × ${state.b} = ?",
@@ -90,7 +92,7 @@ fun ParentGateScreen(
             color = TeddyColors.Primary,
         )
         Text(
-            text = if (state.isWrong) "Leider falsch – neue Aufgabe" else " ",
+            text = if (state.isWrong) stringResource(R.string.gate_wrong) else " ",
             color = TeddyColors.Warning,
             style = MaterialTheme.typography.bodyMedium,
         )
@@ -111,7 +113,7 @@ fun NumberPad(onDigit: (Int) -> Unit, onDelete: () -> Unit, modifier: Modifier =
                         when (key) {
                             null -> Unit
                             -1 -> IconButton(onClick = onDelete, modifier = Modifier.size(80.dp)) {
-                                Icon(Icons.AutoMirrored.Rounded.Backspace, contentDescription = "Löschen")
+                                Icon(Icons.AutoMirrored.Rounded.Backspace, contentDescription = stringResource(R.string.delete))
                             }
                             else -> FilledTonalButton(
                                 onClick = { onDigit(key) },
